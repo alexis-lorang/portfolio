@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>À propos — Alexis Lorang, photographie de paysages</title>
+  <meta name="description" content="À propos du photographe et contact.">
+  <meta name="theme-color" content="#0b0d10">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="entete">
+    <a class="logo" href="index.html" aria-label="Alexis Lorang — Accueil"><span class="logo__nom">Alexis Lorang</span><span class="logo__sous">Photographie de paysages</span></a>
+    <nav class="nav" id="menu" aria-label="Navigation principale"><!-- nav:debut -->
+      <div class="nav__item nav__item--accueil"><a href="index.html"><img src="assets/photos/mers-de-nuages/dsc00063-modifier-s.webp" alt="" loading="lazy">Accueil</a></div>
+      <div class="nav__item"><a href="mers-de-nuages.html"><img src="assets/photos/mers-de-nuages/dsc4957-s.webp" alt="" loading="lazy">Mers de nuages</a></div>
+      <div class="nav__item"><a href="alpes.html"><img src="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier-s.webp" alt="" loading="lazy">Alpes</a>
+        <div class="nav__sous"><a href="alpes.html#suisse">Suisse</a><a href="alpes.html#dolomites">Dolomites</a><a href="alpes.html#val-thorens">Val Thorens</a><a href="alpes.html#aiguilles-rouges">Aiguilles Rouges</a></div>
+      </div>
+      <div class="nav__item"><a href="corse.html"><img src="assets/photos/corse/dsc0337-modifier-s.webp" alt="" loading="lazy">Corse</a></div>
+      <div class="nav__item"><a href="nature.html"><img src="assets/photos/nature/dsc0798-modifier-modifier-s.webp" alt="" loading="lazy">Nature</a></div>
+      <div class="nav__item"><a href="astronomie.html"><img src="assets/photos/astronomie/aurores-boreales/dsc6161-modifier-s.webp" alt="" loading="lazy">Astronomie</a>
+        <div class="nav__sous"><a href="astronomie.html#astrophotographie">Astrophotographie</a><a href="astronomie.html#aurores-boreales">Aurores boréales</a></div>
+      </div>
+      <div class="nav__item"><a href="a-propos.html" aria-current="page">À propos</a></div>
+      <!-- nav:fin --></nav>
+    <button class="burger" type="button" aria-label="Menu" aria-controls="menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
+
+  <main>
+    <section class="section" style="padding-top: clamp(8rem, 18vh, 12rem)">
+      <div class="conteneur deux-colonnes">
+        <div class="texte">
+          <span class="surtitre fondu">À propos</span>
+          <h1 style="font-size: clamp(2.8rem, 6.5vw, 5.5rem); margin: 1.4rem 0 2.2rem">
+            <span class="ligne"><span>Marcher,</span></span>
+            <span class="ligne"><span>attendre,</span></span>
+            <span class="ligne"><span><em>regarder</em></span></span>
+          </h1>
+          <!-- À MODIFIER : votre présentation -->
+          <p class="fondu">[Présentez-vous en quelques phrases : qui vous êtes, où vous vivez, depuis quand vous photographiez.]</p>
+          <p class="fondu">[Votre démarche : ce qui vous attire en montagne, pourquoi les mers de nuages, votre rapport à la lumière du matin.]</p>
+          <p class="fondu">[Éventuellement : votre matériel, vos terrains de jeu favoris, vos projets à venir.]</p>
+        </div>
+        <!-- À MODIFIER : remplacez cette image par votre portrait si vous le souhaitez -->
+        <div class="cadre cadre--portrait devoile">
+          <img src="assets/photos/corse/dsc0173.webp" alt="Une personne assise sur un rocher face aux crêtes dans la brume">
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--serree">
+      <div class="conteneur">
+        <div class="galerie-entete apparait"><span>En quelques mots</span></div>
+        <!-- À MODIFIER : trois repères au choix -->
+        <div class="deux-colonnes" style="grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); align-items: start">
+          <div class="apparait">
+            <h3 style="font-size: 1.9rem; margin-bottom: .6rem">Terrain</h3>
+            <p style="color: var(--discret)">[Vos massifs et régions de prédilection]</p>
+          </div>
+          <div class="apparait" style="--delai:.08s">
+            <h3 style="font-size: 1.9rem; margin-bottom: .6rem">Matériel</h3>
+            <p style="color: var(--discret)">[Boîtier, objectifs favoris]</p>
+          </div>
+          <div class="apparait" style="--delai:.16s">
+            <h3 style="font-size: 1.9rem; margin-bottom: .6rem">Tirages</h3>
+            <p style="color: var(--discret)">[Disponibles sur demande — à préciser]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--serree contact" id="contact">
+      <div class="conteneur">
+        <span class="surtitre apparait">Contact</span>
+        <h2 class="apparait">Écrivez-<em>moi</em></h2>
+        <!-- À MODIFIER : adresse e-mail (deux fois : href et texte) -->
+        <a class="contact__mail apparait" href="mailto:votre@adresse.fr">votre@adresse.fr</a>
+        <!-- À MODIFIER : liens vers vos réseaux -->
+        <div class="reseaux apparait">
+          <a class="lien" href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
+          <a class="lien" href="#" >[Autre réseau]</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pied">
+    <span>© <span data-annee>2026</span> Alexis Lorang — Tous droits réservés</span>
+    <a href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

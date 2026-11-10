@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nature — Alexis Lorang, photographie de paysages</title>
+  <!-- À MODIFIER : description affichée dans Google -->
+  <meta name="description" content="Série Nature — photographies d'Alexis Lorang.">
+  <meta name="theme-color" content="#0b0d10">
+  <meta property="og:title" content="Nature — Alexis Lorang, photographie de paysages">
+  <meta property="og:image" content="assets/photos/nature/dsc0798-modifier-modifier.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/photos/nature/dsc0798-modifier-modifier.webp">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="entete">
+    <a class="logo" href="index.html" aria-label="Alexis Lorang — Accueil"><span class="logo__nom">Alexis Lorang</span><span class="logo__sous">Photographie de paysages</span></a>
+    <nav class="nav" id="menu" aria-label="Navigation principale"><!-- nav:debut -->
+      <div class="nav__item nav__item--accueil"><a href="index.html"><img src="assets/photos/mers-de-nuages/dsc00063-modifier-s.webp" alt="" loading="lazy">Accueil</a></div>
+      <div class="nav__item"><a href="mers-de-nuages.html"><img src="assets/photos/mers-de-nuages/dsc4957-s.webp" alt="" loading="lazy">Mers de nuages</a></div>
+      <div class="nav__item"><a href="alpes.html"><img src="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier-s.webp" alt="" loading="lazy">Alpes</a>
+        <div class="nav__sous"><a href="alpes.html#suisse">Suisse</a><a href="alpes.html#dolomites">Dolomites</a><a href="alpes.html#val-thorens">Val Thorens</a><a href="alpes.html#aiguilles-rouges">Aiguilles Rouges</a></div>
+      </div>
+      <div class="nav__item"><a href="corse.html"><img src="assets/photos/corse/dsc0337-modifier-s.webp" alt="" loading="lazy">Corse</a></div>
+      <div class="nav__item"><a href="nature.html" aria-current="page"><img src="assets/photos/nature/dsc0798-modifier-modifier-s.webp" alt="" loading="lazy">Nature</a></div>
+      <div class="nav__item"><a href="astronomie.html"><img src="assets/photos/astronomie/aurores-boreales/dsc6161-modifier-s.webp" alt="" loading="lazy">Astronomie</a>
+        <div class="nav__sous"><a href="astronomie.html#astrophotographie">Astrophotographie</a><a href="astronomie.html#aurores-boreales">Aurores boréales</a></div>
+      </div>
+      <div class="nav__item"><a href="a-propos.html">À propos</a></div>
+      <!-- nav:fin --></nav>
+    <button class="burger" type="button" aria-label="Menu" aria-controls="menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
+
+  <main>
+    <section class="hero hero--court">
+      <div class="hero__fond" aria-hidden="true">
+        <!-- À MODIFIER : image du bandeau de la série -->
+        <div class="hero__vue est-active"><img src="assets/photos/nature/dsc0798-modifier-modifier.webp" alt=""></div>
+      </div>
+      <div class="hero__texte">
+        <h1><span class="ligne"><span>Nature</span></span></h1>
+        <!-- À MODIFIER : introduction de la série -->
+        <p class="fondu">Plus près du sol&nbsp;: la lumière dans les branches, les détails qu'on croise en chemin.</p>
+      </div>
+      <nav class="hero__index fondu" aria-label="Dans cette série">
+        <div class="sous-nav" data-sous-nav></div>
+      </nav>
+      <a class="hero__defile fondu" href="#galerie">Défiler</a>
+    </section>
+
+    <section class="section section--galerie" id="galerie">
+      <div class="conteneur">
+        <!-- Les photos sont affichées automatiquement à partir de assets/data/photos.js -->
+        <div data-serie="nature"></div>
+        <noscript><p>Activez JavaScript pour afficher la galerie.</p></noscript>
+      </div>
+    </section>
+    <!-- suivante:debut -->
+    <a class="suivante" href="astronomie.html">
+      <img src="assets/photos/astronomie/aurores-boreales/dsc6161-modifier.webp" alt="" loading="lazy">
+      <div>
+        <span class="surtitre">Série suivante</span>
+        <h2>Astronomie</h2>
+      </div>
+    </a>
+    <!-- suivante:fin -->
+  </main>
+
+  <footer class="pied">
+    <span>© <span data-annee>2026</span> Alexis Lorang — Tous droits réservés</span>
+    <a href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
+  </footer>
+
+  <script src="assets/data/photos.js" defer></script>
+  <script src="assets/data/gabarits.js" defer></script>
+  <script src="assets/data/disposition.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

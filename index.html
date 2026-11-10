@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- À MODIFIER : titre et description affichés dans Google et lors d'un partage -->
+  <title>Alexis Lorang — Photographie de paysages</title>
+  <meta name="description" content="Portfolio de photographie de paysage : mers de nuages, Alpes, Corse, nature et astronomie.">
+  <meta name="theme-color" content="#0b0d10">
+  <meta property="og:title" content="Alexis Lorang — Photographie de paysages">
+  <meta property="og:description" content="Sommets des Alpes et mers de nuages.">
+  <meta property="og:image" content="assets/photos/mers-de-nuages/dsc00063-modifier.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/photos/mers-de-nuages/c4.webp">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="entete">
+    <!-- À MODIFIER : nom / signature -->
+    <a class="logo" href="index.html" aria-label="Alexis Lorang — Accueil"><span class="logo__nom">Alexis Lorang</span><span class="logo__sous">Photographie de paysages</span></a>
+    <nav class="nav" id="menu" aria-label="Navigation principale"><!-- nav:debut -->
+      <div class="nav__item nav__item--accueil"><a href="index.html" aria-current="page"><img src="assets/photos/mers-de-nuages/dsc00063-modifier-s.webp" alt="" loading="lazy">Accueil</a></div>
+      <div class="nav__item"><a href="mers-de-nuages.html"><img src="assets/photos/mers-de-nuages/dsc4957-s.webp" alt="" loading="lazy">Mers de nuages</a></div>
+      <div class="nav__item"><a href="alpes.html"><img src="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier-s.webp" alt="" loading="lazy">Alpes</a>
+        <div class="nav__sous"><a href="alpes.html#suisse">Suisse</a><a href="alpes.html#dolomites">Dolomites</a><a href="alpes.html#val-thorens">Val Thorens</a><a href="alpes.html#aiguilles-rouges">Aiguilles Rouges</a></div>
+      </div>
+      <div class="nav__item"><a href="corse.html"><img src="assets/photos/corse/dsc0337-modifier-s.webp" alt="" loading="lazy">Corse</a></div>
+      <div class="nav__item"><a href="nature.html"><img src="assets/photos/nature/dsc0798-modifier-modifier-s.webp" alt="" loading="lazy">Nature</a></div>
+      <div class="nav__item"><a href="astronomie.html"><img src="assets/photos/astronomie/aurores-boreales/dsc6161-modifier-s.webp" alt="" loading="lazy">Astronomie</a>
+        <div class="nav__sous"><a href="astronomie.html#astrophotographie">Astrophotographie</a><a href="astronomie.html#aurores-boreales">Aurores boréales</a></div>
+      </div>
+      <div class="nav__item"><a href="a-propos.html">À propos</a></div>
+      <!-- nav:fin --></nav>
+    <button class="burger" type="button" aria-label="Menu" aria-controls="menu" aria-expanded="false"><i></i><i></i></button>
+  </header>
+
+  <main>
+    <!-- Bandeau : pour changer les images du diaporama, modifier les <img> ci-dessous -->
+    <section class="hero">
+      <div class="hero__fond" aria-hidden="true">
+        <div class="hero__vue est-active"><img src="assets/photos/mers-de-nuages/c4.webp" alt=""></div>
+        <div class="hero__vue"><img src="assets/photos/alpes/dolomites/dsc0491-modifier.webp" alt="" loading="lazy"></div>
+        <div class="hero__vue"><img src="assets/photos/corse/dsc0672-2.webp" alt="" loading="lazy"></div>
+        <div class="hero__vue"><img src="assets/photos/alpes/suisse/dsc0581-modifier-2.webp" alt="" loading="lazy"></div>
+        <div class="hero__vue"><img src="assets/photos/astronomie/aurores-boreales/dsc6230-modifier-modifier-modifier.webp" alt="" loading="lazy"></div>
+      </div>
+
+      <div class="hero__texte">
+        <h1>
+          <span class="ligne"><span>Là où la terre</span></span>
+          <span class="ligne"><span>touche <em>le ciel</em></span></span>
+        </h1>
+        <!-- À MODIFIER : phrase d'accroche -->
+        <p class="fondu">Des sommets des Alpes aux mers de nuages, des images faites tôt le matin, quand la lumière arrive avant tout le monde.</p>
+      </div>
+
+      <div class="hero__bas fondu">
+        <span class="defile">Défiler</span>
+        <div class="puces"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="conteneur">
+        <span class="surtitre apparait">Le portfolio</span>
+        <!-- À MODIFIER : texte de présentation -->
+        <p class="manifeste apparait">Je photographie la montagne comme on la vit : en marchant, en attendant, en levant les yeux. Des <em>mers de nuages</em> au granit corse, des glaciers alpins <em>aux nébuleuses</em> — voici les séries.</p>
+
+        <div class="series"><!-- series:debut -->
+          <a class="serie devoile" href="mers-de-nuages.html" style="--delai:0.00s">
+            <img src="assets/photos/mers-de-nuages/dsc4957.webp" alt="" loading="lazy">
+            <div>
+              <h3>Mers de nuages</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie devoile" href="alpes.html" style="--delai:0.12s">
+            <img src="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier.webp" alt="" loading="lazy">
+            <div>
+              <h3>Alpes</h3>
+              <p class="serie__sous">Suisse · Dolomites · Val Thorens · Aiguilles Rouges</p>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie devoile" href="corse.html" style="--delai:0.24s">
+            <img src="assets/photos/corse/dsc0337-modifier.webp" alt="" loading="lazy">
+            <div>
+              <h3>Corse</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie devoile" href="nature.html" style="--delai:0.00s">
+            <img src="assets/photos/nature/dsc0798-modifier-modifier.webp" alt="" loading="lazy">
+            <div>
+              <h3>Nature</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie devoile" href="astronomie.html" style="--delai:0.12s">
+            <img src="assets/photos/astronomie/aurores-boreales/dsc6161-modifier.webp" alt="" loading="lazy">
+            <div>
+              <h3>Astronomie</h3>
+              <p class="serie__sous">Astrophotographie · Aurores boréales</p>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <!-- series:fin --></div>
+      </div>
+    </section>
+
+    <section class="section section--serree">
+      <div class="conteneur deux-colonnes">
+        <div class="cadre cadre--portrait devoile">
+          <img src="assets/photos/mers-de-nuages/dsc4957.webp" alt="Un randonneur assis sur un rocher face à la mer de nuages" loading="lazy">
+        </div>
+        <div class="texte">
+          <span class="surtitre apparait">À propos</span>
+          <h2 class="apparait">Photographe amateur, <em style="white-space:nowrap">lève-tôt</em> par nécessité</h2>
+          <!-- À MODIFIER : courte présentation -->
+          <p class="apparait">[Quelques lignes pour vous présenter : d'où vous venez, ce qui vous pousse à partir avant l'aube, ce que vous cherchez dans une image.]</p>
+          <p class="apparait"><a class="lien" href="a-propos.html">En savoir plus
+            <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--serree contact">
+      <div class="conteneur">
+        <span class="surtitre apparait">Contact</span>
+        <h2 class="apparait">Une question, un tirage, <em>une sortie&nbsp;?</em></h2>
+        <!-- À MODIFIER : adresse e-mail (deux fois : href et texte) -->
+        <a class="contact__mail apparait" href="mailto:votre@adresse.fr">votre@adresse.fr</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pied">
+    <span>© <span data-annee>2026</span> Alexis Lorang — Tous droits réservés</span>
+    <a href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
+  </footer>
+
+  <script src="assets/data/disposition.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+// Gabarits de mise en page fixes, par grille (« serie » ou « serie/groupe »).
+// Par photo : [identifiant, colonne, ligne, largeur, hauteur] sur une grille de 48 unités de large.
+// Mers de nuages — module : 1 colonne = 16 unités ; petite case 16×11, grande 32×22, verticale 16×22, demi-largeur 24×16.
+// Seules les photos listées sont affichées : une photo absente du gabarit n'apparaît pas sur le site
+// (ajoutez-la ici pour la montrer).
+window.GABARITS = {
+ "mers-de-nuages": [
+  ["dsc0612", 0, 0, 32, 22],
+  ["dsc7148", 32, 0, 16, 11],
+  ["dsc4992", 32, 11, 16, 22],
+  ["dsc5095", 0, 22, 16, 11],
+  ["dsc3778", 16, 22, 16, 11],
+
+  ["dsc3756-modifier", 0, 33, 16, 22],
+  ["dsc3712-modifier-modifier", 16, 33, 32, 22],
+
+  ["dsc00026", 0, 55, 16, 22],
+  ["dsc4076", 16, 55, 16, 11],
+  ["dsc00033", 16, 66, 16, 11],
+  ["dsc0602-modifier", 32, 55, 16, 22],
+
+  ["dsc4938-modifier", 0, 77, 32, 22],
+  ["dsc3974", 32, 77, 16, 11],
+  ["dsc00045", 32, 88, 16, 11],
+
+  ["dsc00063-modifier", 0, 99, 16, 11],
+  ["dsc4245", 0, 110, 16, 11],
+  ["dsc4238-modifier", 16, 99, 32, 22],
+
+  ["dsc1442", 0, 121, 24, 16],
+  ["dsc0503-modifier-modifier", 24, 121, 24, 16]
+ ],
+
+ "alpes/suisse": [
+  ["dsc0235-modifier", 0, 0, 30, 22],
+  ["dsc0716", 30, 0, 18, 22],
+
+  ["dsc0397-panorama", 0, 22, 16, 21],
+  ["dsc0581-modifier-2", 16, 22, 32, 21],
+
+  ["dsc0326", 0, 43, 24, 16],
+  ["dsc0817", 24, 43, 12, 16],
+  ["dsc0299", 36, 43, 12, 16]
+ ],
+
+ "alpes/val-thorens": [
+  ["dsc0917", 0, 0, 13, 14],
+  ["dsc0921", 13, 0, 22, 14],
+  ["dsc1112", 35, 0, 13, 14],
+
+  ["dsc1176", 0, 14, 32, 22],
+  ["dsc1223", 32, 14, 16, 22],
+
+  ["dsc1292", 0, 36, 12, 16],
+  ["dsc1348", 12, 36, 12, 16],
+  ["dsc1262", 24, 36, 24, 16]
+ ],
+
+ "alpes/aiguilles-rouges": [
+  ["dsc2959", 0, 0, 24, 27],
+  ["dsc2603", 24, 0, 24, 14],
+  ["dsc3034", 24, 14, 24, 13],
+
+  ["dsc3176", 0, 27, 17, 21],
+  ["dsc3076", 17, 27, 31, 21],
+
+  ["dsc2669", 0, 48, 26, 18],
+  ["dsc2758", 26, 48, 22, 18],
+
+  ["dsc2650-panorama-modifier", 0, 66, 32, 23],
+  ["dsc3469-modifier", 32, 66, 16, 23]
+ ]
+};
