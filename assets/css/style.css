@@ -471,6 +471,15 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .sous-nav a:hover span { color: var(--accent); }
 
 .section--galerie { padding-top: clamp(2.5rem, 5vw, 4.5rem); scroll-margin-top: 1rem; }
+/* Galerie élargie : aussi large que possible, tant que la photo la plus haute du site
+   (rapport largeur / hauteur de sa case, --galerie-rapport, calculé dans main.js) tient dans l'écran
+   avec 1rem de marge en haut et en bas. Même largeur pour toutes les séries. */
+@media (min-width: 761px) {
+  .section--galerie .conteneur {
+    max-width: calc((100vh - 2rem) * var(--galerie-rapport, 1.7778));
+    max-width: calc((100svh - 2rem) * var(--galerie-rapport, 1.7778));
+  }
+}
 
 /* Repère fixe à droite : la partie en cours pendant le défilement */
 .repere {

@@ -281,6 +281,7 @@
     },
 
     rendre() {
+      Galerie.ajusterLargeur();
       racine.replaceChildren();
       photos = [];
       for (const g of serie.groupes) {
@@ -374,6 +375,26 @@
       Galerie.apresRendu?.();
     });
   }
+
+  /* Largeur des galeries : la même pour toutes les séries, calculée pour que la case la plus haute
+     de tout le site (gabarits et rangées automatiques, sur ordinateur) tienne dans la hauteur de l'écran.
+     Utilisée par .section--galerie .conteneur (style.css, --galerie-rapport). */
+  Galerie.hauteurMax = () =>
+    Math.max(
+      1,
+      ...window.SITE.series.flatMap((s) =>
+        s.groupes.map((g) => {
+          const cle = g.id ? `${s.id}/${g.id}` : s.id;
+          const gabarit = Galerie.gabarits[cle];
+          const dispo = gabarit
+            ? Object.fromEntries(gabarit.map(([id, ...r]) => [id, r]))
+            : Galerie.auto(g.photos, new Set(Galerie.favoris[cle] || []));
+          return Math.max(0, ...Object.values(dispo).map((r) => r[3]));
+        })
+      )
+    );
+  Galerie.ajusterLargeur = () =>
+    document.documentElement.style.setProperty('--galerie-rapport', (N / Galerie.hauteurMax()).toFixed(4));
 
   if (serie) {
     window.Galerie = Galerie;
