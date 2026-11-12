@@ -484,20 +484,81 @@
       addEventListener('resize', demander);
       suivre();
     }
-    /* Défilement aimanté (style.css) : suspendu quand on suit un lien vers une partie de la page
-       (sommaire, repère, « Défiler », adresse avec #), pour arriver sur le titre visé ;
-       il reprend dès qu'on fait défiler soi-même. */
-    const racineDoc = document.documentElement;
-    const suspendreAimant = () => (racineDoc.style.scrollSnapType = 'none');
-    const reprendreAimant = () => racineDoc.style.removeProperty('scroll-snap-type');
+    /* Défilement aimanté, en douceur : une fois le défilement arrêté, si le centre d'une photo « .cible »
+       est juste devant (dans le sens où l'on défilait, à moins d'un quart d'écran), la page glisse
+       lentement jusqu'à le centrer. Jamais de retour en arrière ; toute action de l'utilisateur
+       (molette, trackpad, clavier, clic) l'interrompt aussitôt. Ordinateur uniquement, hors mode
+       édition, visionneuse ouverte, « mouvement réduit », et après un lien vers une partie de la page
+       (sommaire, repère, « Défiler », adresse avec #) tant qu'on n'a pas défilé soi-même. */
+    const aimant = (() => {
+      const ecran = matchMedia('(min-width: 761px) and (hover: hover)');
+      const ATTENTE = 180; // ms sans défilement avant de considérer qu'il est arrêté
+      const PORTEE = 0.25; // distance maximale, en fraction de la hauteur de l'écran
+      let suspendu = false, auto = false, anim = 0, minuterie = 0, sens = 0, dernierY = scrollY, appui = false;
+
+      const arreter = () => {
+        cancelAnimationFrame(anim);
+        auto = false;
+      };
+      const doux = (t) => 0.5 - Math.cos(Math.PI * t) / 2; // départ et arrivée en douceur
+
+      const glisser = (dy) => {
+        const depart = scrollY, debut = performance.now();
+        const duree = Math.min(1000, 500 + Math.abs(dy) * 1.5);
+        auto = true;
+        const pas = (t) => {
+          const k = Math.min(1, (t - debut) / duree);
+          scrollTo({ top: depart + dy * doux(k), behavior: 'instant' });
+          if (k < 1) anim = requestAnimationFrame(pas);
+          else requestAnimationFrame(() => ((auto = false), (dernierY = scrollY)));
+        };
+        anim = requestAnimationFrame(pas);
+      };
+
+      const tenter = () => {
+        if (suspendu || appui || calme || !ecran.matches || !sens) return;
+        if (doc.classList.contains('edition') || document.body.style.overflow === 'hidden') return;
+        const milieu = innerHeight / 2, portee = innerHeight * PORTEE;
+        let meilleur = null;
+        for (const a of racine.querySelectorAll('a.cible')) {
+          const r = a.getBoundingClientRect();
+          const d = r.top + r.height / 2 - milieu;
+          if (d * sens > 1 && Math.abs(d) <= portee && (meilleur === null || Math.abs(d) < Math.abs(meilleur))) meilleur = d;
+        }
+        if (meilleur !== null) glisser(meilleur);
+      };
+
+      addEventListener('scroll', () => {
+        if (auto) return;
+        const y = scrollY;
+        if (y !== dernierY) sens = Math.sign(y - dernierY);
+        dernierY = y;
+        clearTimeout(minuterie);
+        minuterie = setTimeout(tenter, ATTENTE);
+      }, { passive: true });
+
+      // L'utilisateur reprend la main : on lâche tout, sans jamais lutter contre lui.
+      const reprendre = () => {
+        arreter();
+        suspendu = false;
+      };
+      ['wheel', 'touchstart', 'keydown'].forEach((t) => addEventListener(t, reprendre, { passive: true }));
+      addEventListener('mousedown', () => ((appui = true), arreter()));
+      addEventListener('mouseup', () => {
+        appui = false;
+        clearTimeout(minuterie);
+        minuterie = setTimeout(tenter, ATTENTE);
+      });
+
+      return { suspendre: () => ((suspendu = true), arreter(), clearTimeout(minuterie)) };
+    })();
     document.addEventListener('click', (e) => {
       const lien = e.target.closest('a[href*="#"]');
-      if (lien && lien.pathname === location.pathname && lien.hash) suspendreAimant();
+      if (lien && lien.pathname === location.pathname && lien.hash) aimant.suspendre();
     });
-    ['wheel', 'touchstart', 'keydown'].forEach((t) => addEventListener(t, reprendreAimant, { passive: true }));
 
     if (location.hash.length > 1) {
-      suspendreAimant();
+      aimant.suspendre();
       document.getElementById(location.hash.slice(1))?.scrollIntoView();
     }
   }
