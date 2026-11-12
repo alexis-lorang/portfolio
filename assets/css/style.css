@@ -480,15 +480,6 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
     max-width: calc((100svh - 5rem) * var(--galerie-rapport, 1.7778));
   }
 }
-/* Défilement aimanté : quand on s'arrête près d'une photo, la page se cale sur son centre vertical.
-   Seules les photos « .cible » comptent (main.js) : une photo empilée à côté d'une plus haute
-   qui la couvre en hauteur n'en est pas une. Désactivé sur mobile et en mode édition. */
-@media (min-width: 761px) and (hover: hover) {
-  html { scroll-snap-type: y proximity; }
-  html.edition { scroll-snap-type: none; }
-  .galerie--libre a.cible { scroll-snap-align: center; }
-}
-
 /* Repère fixe à droite : la partie en cours pendant le défilement */
 .repere {
   position: fixed; right: 0; top: 50%; z-index: 40;
