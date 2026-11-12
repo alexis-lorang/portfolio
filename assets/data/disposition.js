@@ -112,6 +112,10 @@ window.CADRAGE_MOBILE = {
  },
  "suivante/mers-de-nuages": {
   "dsc3370-panorama-modifier": [0.5, 0.14, 1]
+ },
+ "astronomie/astrophotographie": {
+  "orion-final": [0.531, 0.442, 1.186, 270],
+  "sadr": [0.5, 0.472, 1, 90]
  }
 };
 
