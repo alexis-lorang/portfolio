@@ -75,7 +75,7 @@ window.CADRAGE_MOBILE = {
   "dsc0581-modifier-2": [0.607, 0, 1]
  },
  "suivante/nature": {
-  "dsc6161-modifier": [0.5, 0.531, 1]
+  "dsc6161-modifier": [0.5, 0.488, 1]
  },
  "accueil/series": {
   "dsc0862": [0, 1, 1],
@@ -85,6 +85,33 @@ window.CADRAGE_MOBILE = {
  },
  "accueil/portrait": {
   "dsc4957": [1, 0.5, 1.084]
+ },
+ "couverture/corse": {
+  "dsc0862": [0.384, 0.309, 1]
+ },
+ "couverture/alpes": {
+  "dsc3370-panorama-modifier": [0.593, 0.139, 1]
+ },
+ "couverture/mers-de-nuages": {
+  "dsc4957": [0.263, 0.572, 1]
+ },
+ "couverture/nature": {
+  "dsc2289": [0.463, 0.541, 1]
+ },
+ "nature": {
+  "dsc0797": [0.5, 0.486, 1],
+  "dsc2289": [0.5, 0.51, 1],
+  "dsc0798-modifier-modifier": [0.514, 0.5, 1],
+  "dsc0664-panorama": [0.514, 0.5, 1]
+ },
+ "couverture/astronomie": {
+  "dsc6161-modifier": [0.435, 0.687, 1]
+ },
+ "suivante/astronomie": {
+  "dsc4957": [0.5, 0.375, 1]
+ },
+ "suivante/mers-de-nuages": {
+  "dsc3370-panorama-modifier": [0.5, 0.14, 1]
  }
 };
 

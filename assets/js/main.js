@@ -99,6 +99,22 @@
     const enPause = () => document.documentElement.classList.contains('edition');
     window.Diaporama = { arreter: () => clearTimeout(minuterie), relancer: () => aller(courant) };
     aller(0);
+
+    // Balayage horizontal sur le bandeau (mobile) : image suivante ou précédente.
+    const bandeau = vues[0].closest('.hero');
+    let x0 = null, y0 = 0;
+    bandeau?.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1 || enPause()) return (x0 = null);
+      x0 = e.touches[0].clientX;
+      y0 = e.touches[0].clientY;
+    }, { passive: true });
+    bandeau?.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      const dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) aller(courant + (dx < 0 ? 1 : -1));
+    }, { passive: true });
     document.addEventListener('visibilitychange', () => {
       clearTimeout(minuterie);
       if (!document.hidden && !calme && !enPause()) minuterie = setTimeout(() => aller(courant + 1), 6500);
