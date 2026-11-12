@@ -69,5 +69,49 @@ window.GABARITS = {
 
   ["dsc2650-panorama-modifier", 0, 66, 32, 23],
   ["dsc3469-modifier", 32, 66, 16, 23]
+ ],
+
+ "nature": [
+  ["dsc0798-modifier-modifier", 0, 0, 30, 38],
+  ["dsc0403", 30, 0, 18, 23],
+  ["dsc2289", 30, 23, 18, 15],
+
+  ["dsc9908", 0, 38, 16, 23],
+  ["dsc0664-panorama", 16, 38, 16, 23],
+  ["dsc0797", 32, 38, 16, 23]
+ ],
+
+ "corse": [
+  ["dsc0845", 0, 0, 34, 21],
+  ["dsc0423", 34, 0, 14, 21],
+
+  ["dsc0673", 0, 21, 16, 11],
+  ["dsc0676", 0, 32, 16, 11],
+  ["dsc0672-2", 16, 21, 32, 22],
+
+  ["dsc0683", 0, 43, 28, 19],
+  ["dsc0351", 0, 62, 28, 19],
+  ["dsc0700", 28, 43, 20, 25],
+  ["dsc0438", 28, 68, 20, 13],
+
+  ["dsc0399-modifier", 0, 81, 16, 21],
+  ["dsc0626", 16, 81, 32, 21]
+ ],
+
+ "astronomie/astrophotographie": [
+  ["dsc4219-panorama-modifier", 0, 0, 26, 39],
+  ["pleiades-final", 26, 0, 22, 20],
+  ["north-america", 26, 20, 22, 19],
+
+  ["cygnus-loop", 0, 39, 21, 18],
+  ["orion-final", 21, 39, 27, 18],
+
+  ["sadr", 0, 57, 26, 22],
+  ["heart-nebula", 26, 57, 22, 22]
+ ],
+ "astronomie/aurores-boreales": [
+  ["dsc6230-modifier-modifier-modifier", 0, 0, 48, 32],
+  ["dsc6151-modifier", 0, 32, 15, 22],
+  ["dsc6161-modifier", 15, 32, 33, 22]
  ]
 };

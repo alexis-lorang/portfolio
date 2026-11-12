@@ -25,6 +25,20 @@
   addEventListener('scroll', surDefilement, { passive: true });
   surDefilement();
 
+  /* Hauteur de l'en-tête réduit (celui qui réapparaît quand on remonte), dans --entete-h :
+     la galerie la retire de la hauteur disponible pour garder sa marge sous l'en-tête. */
+  const mesurerEntete = () => {
+    const plein = entete.classList.contains('est-pleine');
+    entete.classList.add('est-pleine', 'sans-transition');
+    doc.style.setProperty('--entete-h', `${entete.offsetHeight}px`);
+    entete.classList.toggle('est-pleine', plein);
+    void entete.offsetHeight;
+    entete.classList.remove('sans-transition');
+  };
+  mesurerEntete();
+  addEventListener('resize', mesurerEntete);
+  document.fonts?.ready.then(mesurerEntete);
+
   /* ---------- Menu mobile ---------- */
   const burger = document.querySelector('.burger');
   const fermerMenu = () => {
@@ -125,7 +139,7 @@
     serie,
     edition: false,
     gabarits: window.GABARITS || {},
-    // Cadrage { "serie/groupe": { id: [centre x, centre y, zoom] } }, un jeu par taille d'écran.
+    // Cadrage { "serie/groupe": { id: [centre x, centre y, zoom, rotation] } }, un jeu par taille d'écran.
     // Sur mobile, une photo sans cadrage mobile reprend celui de l'ordinateur.
     cadrage: window.CADRAGE || {},
     cadrageMobile: window.CADRAGE_MOBILE || {},
@@ -245,24 +259,65 @@
     },
 
     /* Cadrage d'une photo dans sa case : [cx, cy] = point de la photo placé au centre de la case
-       (0 à 1), z = zoom (1 = la photo couvre juste la case). */
-    taille: (rCase, rPhoto, z) => [z * Math.max(1, rPhoto / rCase) * 100, z * Math.max(1, rCase / rPhoto) * 100],
-    borner(rCase, rPhoto, [cx, cy, z]) {
+       (0 à 1), z = zoom (1 = la photo couvre juste la case), a = rotation par quarts de tour
+       (0, 90, 180 ou 270°, facultative). Pivotée d'un quart de tour, la photo couvre la case couchée. */
+    quart: (a = 0) => (((Math.round(a / 90) * 90) % 360) + 360) % 360,
+    enveloppe(rCase, a = 0) {
+      const t = (a * Math.PI) / 180, c = Math.abs(Math.cos(t)), s = Math.abs(Math.sin(t));
+      return [c + s / rCase, s + c / rCase]; // en largeurs de case
+    },
+    taille(rCase, rPhoto, z, a = 0) {
+      const [bw, bh] = Galerie.enveloppe(rCase, a);
+      const l = z * Math.max(bw, bh * rPhoto); // largeur de la photo, en largeurs de case
+      return [l * 100, (l / rPhoto) * rCase * 100];
+    },
+    borner(rCase, rPhoto, [cx, cy, z, a = 0]) {
       z = Math.min(4, Math.max(1, z));
-      const [W, H] = Galerie.taille(rCase, rPhoto, z);
-      const bx = 50 / W, by = 50 / H;
-      return [Math.min(1 - bx, Math.max(bx, cx)), Math.min(1 - by, Math.max(by, cy)), z];
+      a = Galerie.quart(a);
+      const [W, H] = Galerie.taille(rCase, rPhoto, z, a);
+      const [bw, bh] = Galerie.enveloppe(rCase, a);
+      const bx = Math.min(0.5, (50 * bw) / W), by = Math.min(0.5, (50 * bh * rCase) / H);
+      return [Math.min(1 - bx, Math.max(bx, cx)), Math.min(1 - by, Math.max(by, cy)), z, a];
+    },
+    // Proportions réelles de la case affichée (la marge entre photos les modifie un peu) :
+    // indispensables pour une photo couchée, dont la largeur doit couvrir la hauteur de la case.
+    rapportCase(a) {
+      const vue = a.querySelector('.vue');
+      return vue?.clientHeight ? vue.clientWidth / vue.clientHeight : Number(a.dataset.case);
     },
     cadrer(a) {
       const img = a.querySelector('img');
-      const rCase = Number(a.dataset.case), rPhoto = Number(a.dataset.ratio);
+      const rCase = Galerie.rapportCase(a), rPhoto = Number(a.dataset.ratio);
       const reglage = Galerie.reglage(a.parentElement.dataset.cle, a.dataset.id);
-      const [cx, cy, z] = Galerie.borner(rCase, rPhoto, reglage);
-      const [W, H] = Galerie.taille(rCase, rPhoto, z);
+      const [cx, cy, z, angle] = Galerie.borner(rCase, rPhoto, reglage);
+      const [W, H] = Galerie.taille(rCase, rPhoto, z, angle);
       img.style.width = `${W}%`;
       img.style.height = `${H}%`;
       img.style.left = `${50 - cx * W}%`;
       img.style.top = `${50 - cy * H}%`;
+      // pivote autour du point placé au centre de la case
+      img.style.transformOrigin = angle ? `${cx * 100}% ${cy * 100}%` : '';
+      img.style.rotate = angle ? `${angle}deg` : '';
+    },
+
+    /* Photo en object-fit: cover qui remplit son parent (accueil, bandeau des séries) :
+       rotation par quarts de tour autour du centre (couchée, la photo prend les dimensions
+       du cadre inversées) et zoom autour du point [px, py]. */
+    pivoter(el, [px, py, z, a = 0]) {
+      a = Galerie.quart(a);
+      const L = el.parentElement.clientWidth, H = el.parentElement.clientHeight;
+      const couche = a % 180 === 90;
+      Object.assign(el.style, couche
+        ? { position: 'absolute', inset: 'auto', maxWidth: 'none', width: `${H}px`, height: `${L}px`, left: `${(L - H) / 2}px`, top: `${(H - L) / 2}px` }
+        : { position: '', inset: '', maxWidth: '', width: '', height: '', left: '', top: '' });
+      const [l, h] = couche ? [H, L] : [L, H];
+      // décalage du zoom autour de [px, py], ramené à l'écran
+      const ox = (1 - z) * (px - 0.5) * l, oy = (1 - z) * (py - 0.5) * h;
+      const t = (a * Math.PI) / 180, c = Math.round(Math.cos(t)), s = Math.round(Math.sin(t));
+      el.style.transformOrigin = '50% 50%'; // le CSS peut en imposer un autre (ex. .devoile img)
+      el.style.translate = z > 1 ? `${ox * c - oy * s}px ${ox * s + oy * c}px` : '';
+      el.style.rotate = a ? `${a}deg` : '';
+      el.style.scale = z > 1 ? String(z) : '';
     },
 
     // Applique une disposition aux vignettes d'une grille.
@@ -309,7 +364,7 @@
         liste.forEach((p, n) => {
           const i = photos.length;
           const grand = `${base}${p.id}.webp`;
-          photos.push({ ...p, grand });
+          photos.push({ ...p, grand, cle });
           const a = document.createElement('a');
           a.href = grand;
           a.dataset.id = p.id;
@@ -343,49 +398,58 @@
       }
       racine.querySelectorAll('.apparait, .tuile').forEach(observer);
       document.querySelectorAll('[data-compte]').forEach((el) => (el.textContent = photos.length));
+      Galerie.recadrer(); // la grille est maintenant affichée : proportions réelles des cases
     },
+    recadrer: () => racine?.querySelectorAll('.galerie a').forEach(Galerie.cadrer),
   };
 
-  /* Cadrage des photos de l'accueil (bandeau, cartes des séries, portrait) : enregistré dans CADRAGE
-     sous « accueil/bandeau », « accueil/series », « accueil/portrait », [position x, position y, zoom]. */
+  /* Photos recadrables hors galerie : accueil (bandeau, cartes des séries, portrait) et bandeau
+     « Série suivante » en bas de chaque série. Enregistré dans CADRAGE sous « accueil/bandeau »,
+     « accueil/series », « accueil/portrait » et « suivante/<série de la page> »,
+     [position x, position y, zoom, rotation]. */
   const cadresAccueil = [
-    ['bandeau', '.hero:not(.hero--court) .hero__vue img', '.hero'],
-    ['series', '.series .serie img', '.serie'],
-    ['portrait', '.deux-colonnes .cadre img', '.cadre'],
-  ].flatMap(([zone, choix, parent]) =>
+    ['accueil/bandeau', '.hero:not(.hero--court) .hero__vue img', '.hero'],
+    ['accueil/series', '.series .serie img', '.serie'],
+    ['accueil/portrait', '.deux-colonnes .cadre img', '.cadre'],
+    [`suivante/${serie?.id}`, '.suivante img', '.suivante'],
+  ].flatMap(([cle, choix, parent]) =>
     [...document.querySelectorAll(choix)].map((img) => ({
       img,
       zone: img.closest(parent),
-      cle: `accueil/${zone}`,
+      cle,
       id: img.getAttribute('src').split('/').pop().replace(/\.webp$/, ''),
     }))
   );
-  if (!serie && cadresAccueil.length) {
+  if (cadresAccueil.length) {
     window.Galerie = Galerie;
     Galerie.cadres = cadresAccueil;
     Galerie.cadrerTout = () => {
       for (const { img, cle, id } of cadresAccueil) {
-        const [px, py, z] = Galerie.reglage(cle, id);
-        const position = `${px * 100}% ${py * 100}%`;
-        img.style.objectPosition = position;
-        img.style.transformOrigin = position;
-        img.style.scale = z > 1 ? String(z) : '';
+        const r = Galerie.reglage(cle, id);
+        img.style.objectPosition = `${r[0] * 100}% ${r[1] * 100}%`;
+        Galerie.pivoter(img, r);
       }
     };
     Galerie.cadrerTout();
+    addEventListener('resize', Galerie.cadrerTout);
     etroit.addEventListener('change', () => {
       Galerie.cadrerTout();
       Galerie.apresRendu?.();
     });
   }
 
-  /* Largeur des galeries : la même pour toutes les séries, calculée pour que la case la plus haute
-     de tout le site (gabarits et rangées automatiques, sur ordinateur) tienne dans la hauteur de l'écran.
+  /* Largeur de la galerie : calculée pour que la case la plus haute de la série (toutes
+     sous-catégories, gabarits et rangées automatiques, sur ordinateur) tienne dans la hauteur
+     de l'écran. Les séries d'un même groupe partagent la même largeur : celle de la plus étroite.
      Utilisée par .section--galerie .conteneur (style.css, --galerie-rapport). */
+  const LARGEUR_COMMUNE = ['alpes', 'corse', 'mers-de-nuages'];
   Galerie.hauteurMax = () =>
     Math.max(
       1,
-      ...window.SITE.series.flatMap((s) =>
+      ...(LARGEUR_COMMUNE.includes(serie.id)
+        ? window.SITE.series.filter((s) => LARGEUR_COMMUNE.includes(s.id))
+        : [serie]
+      ).flatMap((s) =>
         s.groupes.map((g) => {
           const cle = g.id ? `${s.id}/${g.id}` : s.id;
           const gabarit = Galerie.gabarits[cle];
@@ -402,6 +466,7 @@
   if (serie) {
     window.Galerie = Galerie;
     Galerie.rendre();
+    addEventListener('resize', Galerie.recadrer);
 
     /* Cadrage de la photo de couverture (bandeau) : enregistré dans CADRAGE sous « couverture/<série> »,
        [position x, position y (0 à 1, comme object-position), zoom]. */
@@ -414,14 +479,12 @@
       };
       Galerie.cadrerCouverture = () => {
         const { img, cle, id } = Galerie.couverture;
-        const [px, py, z] = Galerie.reglage(cle, id);
-        const position = `${px * 100}% ${py * 100}%`;
-        img.style.objectPosition = position;
-        const vue = img.parentElement;
-        vue.style.transformOrigin = position;
-        vue.style.transform = z > 1 ? `scale(${z})` : '';
+        const r = Galerie.reglage(cle, id);
+        img.style.objectPosition = `${r[0] * 100}% ${r[1] * 100}%`;
+        Galerie.pivoter(img.parentElement, r);
       };
       Galerie.cadrerCouverture();
+      addEventListener('resize', Galerie.cadrerCouverture);
     }
     etroit.addEventListener('change', () => {
       Galerie.rendre();
@@ -556,6 +619,9 @@
     img.alt = p.titre || `Photo ${index + 1}`;
     img.draggable = false;
     img.src = p.grand;
+    img.dataset.angle = p.cle ? Galerie.quart(Galerie.reglage(p.cle, p.id)[3]) : 0;
+    img.dataset.ratio = p.w / p.h;
+    orienter(img);
     scene.prepend(img);
     const afficher = () => requestAnimationFrame(() => img.classList.add('est-visible'));
     img.decode ? img.decode().then(afficher, afficher) : (img.onload = afficher);
@@ -572,12 +638,27 @@
     }
   }
 
+  // Photo pivotée d'un quart de tour : dimensions calculées pour tenir couchée dans la scène.
+  function orienter(img) {
+    const a = Number(img.dataset.angle);
+    img.style.rotate = a ? `${a}deg` : '';
+    if (a % 180 !== 90) return;
+    const st = getComputedStyle(scene);
+    const l = scene.clientWidth - parseFloat(st.paddingLeft) - parseFloat(st.paddingRight);
+    const h = scene.clientHeight;
+    const r = Number(img.dataset.ratio); // largeur / hauteur de la photo non pivotée
+    const largeur = Math.min(h, l * r); // largeur de la photo, verticale une fois couchée
+    Object.assign(img.style, { padding: '0', maxWidth: 'none', maxHeight: 'none', width: `${largeur}px`, height: `${largeur / r}px` });
+  }
+  addEventListener('resize', () => scene?.querySelectorAll('img').forEach(orienter));
+
   function ouvrir(i, declencheur) {
     if (!boite) construire();
     origine = declencheur;
     montrer(i);
     boite.classList.add('est-ouverte');
     document.body.style.overflow = 'hidden';
+    scene.querySelectorAll('img').forEach(orienter); // la barre de défilement a disparu
     boite.querySelector('.visionneuse__fermer').focus({ preventScroll: true });
   }
 

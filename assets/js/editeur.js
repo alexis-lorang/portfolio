@@ -1,6 +1,7 @@
 // Mode édition — chargé uniquement avec le serveur local (outils/serveur.mjs).
 // Les cases des photos ne bougent pas : on règle seulement le cadrage de chaque photo dans sa case
-// (glisser pour déplacer l'image, molette pour zoomer, double-clic pour revenir au cadrage centré).
+// (glisser pour déplacer l'image, molette pour zoomer, bouton ↻ pour pivoter d'un quart de tour,
+// double-clic pour revenir au cadrage centré, sans rotation).
 // Le cadrage est propre à la taille d'écran affichée : en dessous de 760 px de large, on règle
 // le cadrage mobile (qui reprend celui de l'ordinateur tant qu'il n'a pas été modifié).
 // Dans les grilles automatiques (sans gabarit), l'étoile met une photo en avant.
@@ -16,8 +17,11 @@
   const etat = () => JSON.stringify([G.cadrage, G.cadrageMobile, G.favoris]);
 
   // Note un cadrage dans le jeu de la taille d'écran affichée (rien si c'est le cadrage par défaut).
-  const pareil = (a, b) => a.every((v, i) => Math.abs(v - b[i]) < 0.002);
+  // [x, y, zoom] ou [x, y, zoom, rotation] quand la photo est pivotée (90, 180 ou 270°).
+  const complet = (r) => [r[0], r[1], r[2], r[3] || 0];
+  const pareil = (a, b) => complet(a).every((v, i) => Math.abs(v - complet(b)[i]) < 0.002);
   function noter(cle, id, r) {
+    r = G.quart(r[3]) ? [r[0], r[1], r[2], G.quart(r[3])] : r.slice(0, 3);
     const mobile = G.mobile();
     const jeu = mobile ? G.cadrageMobile : G.cadrage;
     const base = mobile ? G.cadrage[cle]?.[id] || [0.5, 0.5, 1] : [0.5, 0.5, 1];
@@ -39,7 +43,7 @@
     barre.hidden = !G.edition && !message;
     barre.innerHTML = G.edition
       ? `<span class="editeur__mode">${G.mobile() ? 'Cadrage mobile' : 'Cadrage ordinateur'}</span>
-         <span class="editeur__aide">${message || 'Glissez une photo ou le bandeau pour recadrer · molette pour zoomer · double-clic pour recentrer · V pour sortir'}</span>
+         <span class="editeur__aide">${message || 'Glissez une photo ou le bandeau pour recadrer · molette pour zoomer · ↻ pour pivoter · double-clic pour réinitialiser · V pour sortir'}</span>
          <button type="button" data-action="annuler">Annuler</button>
          <button type="button" data-action="enregistrer" class="editeur__principal">Enregistrer</button>`
       : message ? `<span class="editeur__aide">${message}</span>` : '';
@@ -58,6 +62,7 @@
     if (!G.edition || !racine) return;
     for (const a of racine.querySelectorAll('.galerie a')) {
       const cle = a.parentElement.dataset.cle;
+      a.append(bouton('pivot'));
       if (G.gabarits[cle]) continue; // gabarit fixe : pas de favorites
       const favori = (G.favoris[cle] || []).includes(a.dataset.id);
       const etoile = document.createElement('button');
@@ -127,12 +132,28 @@
     else dessinerBarre('Modifications en cours : Enregistrer ou Annuler');
   };
 
+  /* ---------- Rotation par quarts de tour (bouton ↻) ---------- */
+  const bouton = (classe) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = classe;
+    b.textContent = '↻';
+    b.title = "Pivoter d'un quart de tour";
+    return b;
+  };
+  const plus90 = ([x, y, z, a = 0]) => [x, y, z, G.quart(a + 90)];
+  // Un glissement à l'écran, ramené dans le repère de la photo pivotée.
+  const tourner = (dx, dy, a = 0) => {
+    const t = (-a * Math.PI) / 180;
+    return [dx * Math.cos(t) - dy * Math.sin(t), dx * Math.sin(t) + dy * Math.cos(t)];
+  };
+
   /* ---------- Cadrage ---------- */
   const lien = (e) => (G.edition ? e.target.closest('.galerie a') : null);
 
   function regler(a, reglage) {
     const cle = a.parentElement.dataset.cle;
-    const r = G.borner(Number(a.dataset.case), Number(a.dataset.ratio), reglage).map(arrondi);
+    const r = G.borner(G.rapportCase(a), Number(a.dataset.ratio), reglage).map(arrondi);
     noter(cle, a.dataset.id, r);
     G.cadrer(a);
     // passe à la grande version de la photo quand on zoome
@@ -143,16 +164,19 @@
 
   racine?.addEventListener('pointerdown', (e) => {
     const a = lien(e);
-    if (!a || e.button !== 0 || e.target.closest('.etoile')) return;
+    if (!a || e.button !== 0 || e.target.closest('button')) return;
     e.preventDefault();
     const vue = a.querySelector('.vue');
-    const [cx, cy, z] = G.borner(Number(a.dataset.case), Number(a.dataset.ratio), reglageDe(a));
-    const [W, H] = G.taille(Number(a.dataset.case), Number(a.dataset.ratio), z);
+    const [cx, cy, z, angle] = G.borner(G.rapportCase(a), Number(a.dataset.ratio), reglageDe(a));
+    const [W, H] = G.taille(G.rapportCase(a), Number(a.dataset.ratio), z, angle);
     // largeur et hauteur de la photo affichée, en pixels
     const pw = (W / 100) * vue.clientWidth, ph = (H / 100) * vue.clientHeight;
     a.setPointerCapture(e.pointerId);
     a.classList.add('est-saisie');
-    const bouge = (ev) => regler(a, [cx - (ev.clientX - e.clientX) / pw, cy - (ev.clientY - e.clientY) / ph, z]);
+    const bouge = (ev) => {
+      const [dx, dy] = tourner(ev.clientX - e.clientX, ev.clientY - e.clientY, angle);
+      regler(a, [cx - dx / pw, cy - dy / ph, z, angle]);
+    };
     const fin = () => {
       a.removeEventListener('pointermove', bouge);
       a.removeEventListener('pointerup', fin);
@@ -170,15 +194,15 @@
       const a = lien(e);
       if (!a) return;
       e.preventDefault();
-      const [cx, cy, z] = reglageDe(a);
-      regler(a, [cx, cy, z * Math.exp(-e.deltaY * 0.0015)]);
+      const [cx, cy, z, angle] = reglageDe(a);
+      regler(a, [cx, cy, z * Math.exp(-e.deltaY * 0.0015), angle]);
     },
     { passive: false }
   );
 
   racine?.addEventListener('dblclick', (e) => {
     const a = lien(e);
-    if (a && !e.target.closest('.etoile')) regler(a, [0.5, 0.5, 1]);
+    if (a && !e.target.closest('button')) regler(a, [0.5, 0.5, 1]);
   });
 
   /* ---------- Cadrage de la photo de couverture (bandeau) ---------- */
@@ -186,8 +210,8 @@
   const hero = C?.img.closest('.hero');
   if (hero) {
     const reglageCouverture = () => G.reglage(C.cle, C.id);
-    const reglerCouverture = ([px, py, z]) => {
-      const r = [Math.min(1, Math.max(0, px)), Math.min(1, Math.max(0, py)), Math.min(3, Math.max(1, z))].map(arrondi);
+    const reglerCouverture = ([px, py, z, angle = 0]) => {
+      const r = [Math.min(1, Math.max(0, px)), Math.min(1, Math.max(0, py)), Math.min(3, Math.max(1, z)), angle].map(arrondi);
       noter(C.cle, C.id, r);
       G.cadrerCouverture();
     };
@@ -196,20 +220,19 @@
     hero.addEventListener('pointerdown', (e) => {
       if (!dansHero(e) || e.button !== 0) return;
       e.preventDefault();
-      const [px, py, z] = reglageCouverture();
+      const [px, py, z, angle = 0] = reglageCouverture();
       // débordement de la photo (object-fit: cover) par rapport au bandeau, en pixels
-      const boite = C.img.parentElement.getBoundingClientRect();
+      const vue = C.img.parentElement; // dans le repère de la photo (largeur et hauteur inversées si couchée)
+      const boite = { width: vue.offsetWidth, height: vue.offsetHeight };
       const echelle = Math.max(boite.width / C.img.naturalWidth, boite.height / C.img.naturalHeight);
       const dx0 = C.img.naturalWidth * echelle - boite.width;
       const dy0 = C.img.naturalHeight * echelle - boite.height;
       hero.setPointerCapture(e.pointerId);
       hero.classList.add('est-saisie');
-      const bouge = (ev) =>
-        reglerCouverture([
-          dx0 > 1 ? px - (ev.clientX - e.clientX) / dx0 : px,
-          dy0 > 1 ? py - (ev.clientY - e.clientY) / dy0 : py,
-          z,
-        ]);
+      const bouge = (ev) => {
+        const [dx, dy] = tourner(ev.clientX - e.clientX, ev.clientY - e.clientY, angle);
+        reglerCouverture([dx0 > 1 ? px - dx / dx0 : px, dy0 > 1 ? py - dy / dy0 : py, z, angle]);
+      };
       const fin = () => {
         hero.removeEventListener('pointermove', bouge);
         hero.removeEventListener('pointerup', fin);
@@ -225,12 +248,15 @@
       (e) => {
         if (!dansHero(e)) return;
         e.preventDefault();
-        const [px, py, z] = reglageCouverture();
-        reglerCouverture([px, py, z * Math.exp(-e.deltaY * 0.0015)]);
+        const [px, py, z, angle] = reglageCouverture();
+        reglerCouverture([px, py, z * Math.exp(-e.deltaY * 0.0015), angle]);
       },
       { passive: false }
     );
     hero.addEventListener('dblclick', (e) => dansHero(e) && reglerCouverture([0.5, 0.5, 1]));
+    const pivotHero = bouton('pivot pivot--cadre');
+    pivotHero.addEventListener('click', () => reglerCouverture(plus90(reglageCouverture())));
+    hero.append(pivotHero);
   }
 
   /* ---------- Cadrage des photos de l'accueil (bandeau, cartes des séries, portrait) ---------- */
@@ -239,8 +265,8 @@
     // Dans le bandeau, on recadre l'image du diaporama affichée.
     const cadreDe = (zone) =>
       G.cadres.find((c) => c.zone === zone && (c.img.closest('.hero__vue')?.classList.contains('est-active') ?? true));
-    const regler = (c, [px, py, z]) => {
-      const r = [Math.min(1, Math.max(0, px)), Math.min(1, Math.max(0, py)), Math.min(3, Math.max(1, z))].map(arrondi);
+    const regler = (c, [px, py, z, angle = 0]) => {
+      const r = [Math.min(1, Math.max(0, px)), Math.min(1, Math.max(0, py)), Math.min(3, Math.max(1, z)), angle].map(arrondi);
       noter(c.cle, c.id, r);
       G.cadrerTout();
     };
@@ -251,7 +277,7 @@
         const c = cadreDe(zone);
         if (!c || !actif(e) || e.button !== 0) return;
         e.preventDefault();
-        const [px, py, z] = G.reglage(c.cle, c.id);
+        const [px, py, z, angle = 0] = G.reglage(c.cle, c.id);
         // débordement de la photo (object-fit: cover) par rapport à son cadre, en pixels
         const l = c.img.offsetWidth, h = c.img.offsetHeight;
         const echelle = Math.max(l / c.img.naturalWidth, h / c.img.naturalHeight) * z;
@@ -259,12 +285,10 @@
         const dy0 = c.img.naturalHeight * echelle - h;
         zone.setPointerCapture(e.pointerId);
         zone.classList.add('est-saisie');
-        const bouge = (ev) =>
-          regler(c, [
-            dx0 > 1 ? px - (ev.clientX - e.clientX) / dx0 : px,
-            dy0 > 1 ? py - (ev.clientY - e.clientY) / dy0 : py,
-            z,
-          ]);
+        const bouge = (ev) => {
+          const [dx, dy] = tourner(ev.clientX - e.clientX, ev.clientY - e.clientY, angle);
+          regler(c, [dx0 > 1 ? px - dx / dx0 : px, dy0 > 1 ? py - dy / dy0 : py, z, angle]);
+        };
         const fin = () => {
           zone.removeEventListener('pointermove', bouge);
           zone.removeEventListener('pointerup', fin);
@@ -281,8 +305,8 @@
           const c = cadreDe(zone);
           if (!c || !actif(e)) return;
           e.preventDefault();
-          const [px, py, z] = G.reglage(c.cle, c.id);
-          regler(c, [px, py, z * Math.exp(-e.deltaY * 0.0015)]);
+          const [px, py, z, angle] = G.reglage(c.cle, c.id);
+          regler(c, [px, py, z * Math.exp(-e.deltaY * 0.0015), angle]);
         },
         { passive: false }
       );
@@ -290,10 +314,26 @@
         const c = cadreDe(zone);
         if (c && actif(e)) regler(c, [0.5, 0.5, 1]);
       });
+      const pivot = bouton('pivot pivot--cadre');
+      pivot.addEventListener('click', (e) => {
+        e.preventDefault();
+        const c = cadreDe(zone);
+        if (c) regler(c, plus90(G.reglage(c.cle, c.id)));
+      });
+      zone.append(pivot);
       // Pas de navigation en cliquant sur une carte pendant le recadrage
       zone.addEventListener('click', (e) => G.edition && actif(e) && e.preventDefault());
     }
   }
+
+  // ↻ sur une photo de la galerie : quart de tour.
+  racine?.addEventListener('click', (e) => {
+    const pivot = e.target.closest('.galerie .pivot');
+    if (!pivot || !G.edition) return;
+    e.preventDefault();
+    const a = pivot.closest('a');
+    regler(a, plus90(reglageDe(a)));
+  });
 
   // Étoile : met une photo en favorite ou la retire (la grille automatique est recalculée).
   racine?.addEventListener('click', (e) => {

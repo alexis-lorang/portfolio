@@ -1,6 +1,6 @@
 // Réglages enregistrés depuis le site (mode édition). La mise en page fixe est dans gabarits.js.
 
-// Cadrage des photos dans leur case : [centre x, centre y (0 à 1, dans la photo), zoom].
+// Cadrage des photos dans leur case : [centre x, centre y (0 à 1, dans la photo), zoom, rotation (90, 180 ou 270°, facultative)].
 window.CADRAGE = {
  "mers-de-nuages": {
   "dsc3756-modifier": [0.536, 0.5, 1],
@@ -29,26 +29,62 @@ window.CADRAGE = {
   "dsc4957": [0.5, 0.572, 1]
  },
  "accueil/bandeau": {
-  "dsc0491-modifier": [0.5, 1, 1],
   "dsc0672-2": [0.5, 0.228, 1],
   "dsc0581-modifier-2": [0.5, 0, 1],
-  "dsc6230-modifier-modifier-modifier": [0.5, 0.812, 1]
+  "dsc6230-modifier-modifier-modifier": [0.5, 0.812, 1],
+  "dsc0491-modifier": [0.5, 0, 1]
  },
  "accueil/series": {
-  "dsc4957": [0.547, 0.5, 1],
-  "dsc3370-panorama-modifier": [0.466, 0.5, 1],
+  "dsc4957": [0.547, 1, 1],
+  "dsc3370-panorama-modifier": [0.466, 0.61, 1],
   "dsc0337-modifier": [0.621, 0.5, 1],
   "dsc0798-modifier-modifier": [0.235, 0.5, 1],
-  "dsc6161-modifier": [0.414, 0.5, 1]
+  "dsc6161-modifier": [0.311, 0.5, 1],
+  "dsc0862": [0, 0.5, 1],
+  "dsc2289": [0.5, 1, 1]
+ },
+ "couverture/corse": {
+  "dsc0862": [0.5, 0.309, 1]
+ },
+ "couverture/nature": {
+  "dsc2289": [0.5, 0.541, 1]
+ },
+ "suivante/mers-de-nuages": {
+  "dsc3370-panorama-modifier": [0.5, 0.497, 1]
+ },
+ "suivante/alpes": {
+  "dsc0862": [0.5, 0.569, 1]
+ },
+ "suivante/corse": {
+  "dsc2289": [0.5, 0.761, 1]
+ },
+ "suivante/nature": {
+  "dsc6161-modifier": [0.5, 0.335, 1]
+ },
+ "suivante/astronomie": {
+  "dsc4957": [0.5, 0.173, 1]
  }
 };
 
 // Cadrage sur mobile (écran de moins de 760 px), quand il diffère de celui de l'ordinateur.
 window.CADRAGE_MOBILE = {
  "accueil/bandeau": {
-  "c4": [0, 0.5, 1],
-  "dsc0581-modifier-2": [0.503, 0, 1],
-  "dsc6230-modifier-modifier-modifier": [0.387, 0.812, 1]
+  "dsc6230-modifier-modifier-modifier": [0.439, 0.812, 1],
+  "c4": [0.366, 0.5, 1],
+  "dsc0491-modifier": [0.438, 0, 1],
+  "dsc0581-modifier-2": [0.607, 0, 1]
+ },
+ "suivante/nature": {
+  "dsc6161-modifier": [0.5, 0.531, 1]
+ },
+ "accueil/series": {
+  "dsc0862": [0, 1, 1],
+  "dsc3370-panorama-modifier": [0.466, 0.716, 1],
+  "dsc2289": [0.5, 0.594, 1],
+  "dsc6161-modifier": [0.311, 1, 1]
+ },
+ "accueil/portrait": {
+  "dsc4957": [1, 0.5, 1.084]
  }
 };
 

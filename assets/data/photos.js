@@ -115,7 +115,7 @@ window.SITE = {
   {
    "id": "corse",
    "nom": "Corse",
-   "couverture": "dsc0337-modifier",
+   "couverture": "dsc0862",
    "groupes": [
     {
      "id": "",
@@ -156,7 +156,7 @@ window.SITE = {
   {
    "id": "nature",
    "nom": "Nature",
-   "couverture": "dsc0798-modifier-modifier",
+   "couverture": "dsc2289",
    "groupes": [
     {
      "id": "",
@@ -169,7 +169,9 @@ window.SITE = {
       { "id": "dsc0507", "w": 707, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc0797", "w": 667, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc0798-modifier-modifier", "w": 806, "h": 1000, "titre": "", "lieu": "" },
-      { "id": "dsc9908", "w": 699, "h": 1000, "titre": "", "lieu": "" }
+      { "id": "dsc9908", "w": 699, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc0664-panorama", "w": 707, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc2289", "w": 1000, "h": 839, "titre": "", "lieu": "" }
      ]
     }
    ]
@@ -180,22 +182,25 @@ window.SITE = {
    "couverture": "aurores-boreales/dsc6161-modifier",
    "groupes": [
     {
-     "id": "astrophotographie",
-     "nom": "Astrophotographie",
-     "photos": [
-      { "id": "cygnus-loop", "w": 1000, "h": 824, "titre": "Cygnus Loop", "lieu": "" },
-      { "id": "heart-nebula", "w": 950, "h": 1000, "titre": "Heart Nebula", "lieu": "" },
-      { "id": "north-america", "w": 1000, "h": 907, "titre": "North America", "lieu": "" },
-      { "id": "sadr", "w": 798, "h": 1000, "titre": "Sadr", "lieu": "" }
-     ]
-    },
-    {
      "id": "aurores-boreales",
      "nom": "Aurores boréales",
      "photos": [
       { "id": "dsc6151-modifier", "w": 667, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc6161-modifier", "w": 1000, "h": 665, "titre": "", "lieu": "" },
       { "id": "dsc6230-modifier-modifier-modifier", "w": 1000, "h": 667, "titre": "", "lieu": "" }
+     ]
+    },
+    {
+     "id": "astrophotographie",
+     "nom": "Astrophotographie",
+     "photos": [
+      { "id": "cygnus-loop", "w": 1000, "h": 824, "titre": "Cygnus Loop", "lieu": "" },
+      { "id": "heart-nebula", "w": 950, "h": 1000, "titre": "Heart Nebula", "lieu": "" },
+      { "id": "north-america", "w": 1000, "h": 907, "titre": "North America", "lieu": "" },
+      { "id": "sadr", "w": 798, "h": 1000, "titre": "Sadr", "lieu": "" },
+      { "id": "dsc4219-panorama-modifier", "w": 670, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "orion-final", "w": 695, "h": 1000, "titre": "Orion Nebula", "lieu": "" },
+      { "id": "pleiades-final", "w": 1000, "h": 948, "titre": "Pleiades", "lieu": "" }
      ]
     }
    ]

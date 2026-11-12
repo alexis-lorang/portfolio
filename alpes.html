@@ -14,6 +14,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500&family=Italianno&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier.webp">
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- blocking="render" : le cadrage et la mise en page sont appliqués avant le premier affichage
+       (sinon la transition entre pages montre la photo de couverture mal placée puis la recale) -->
+  <script src="assets/data/photos.js" defer blocking="render"></script>
+  <script src="assets/data/gabarits.js" defer blocking="render"></script>
+  <script src="assets/data/disposition.js" defer blocking="render"></script>
+  <script src="assets/js/main.js" defer blocking="render"></script>
 </head>
 <body>
 
@@ -23,8 +29,8 @@
       <div class="nav__item nav__item--accueil"><a href="index.html"><img src="assets/photos/mers-de-nuages/dsc00063-modifier-s.webp" alt="" loading="lazy">Accueil</a></div>
       <div class="nav__item"><a href="mers-de-nuages.html"><img src="assets/photos/mers-de-nuages/dsc4957-s.webp" alt="" loading="lazy">Mers de nuages</a></div>
       <div class="nav__item"><a href="alpes.html" aria-current="page"><img src="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier-s.webp" alt="" loading="lazy">Alpes</a></div>
-      <div class="nav__item"><a href="corse.html"><img src="assets/photos/corse/dsc0337-modifier-s.webp" alt="" loading="lazy">Corse</a></div>
-      <div class="nav__item"><a href="nature.html"><img src="assets/photos/nature/dsc0798-modifier-modifier-s.webp" alt="" loading="lazy">Nature</a></div>
+      <div class="nav__item"><a href="corse.html"><img src="assets/photos/corse/dsc0862-s.webp" alt="" loading="lazy">Corse</a></div>
+      <div class="nav__item"><a href="nature.html"><img src="assets/photos/nature/dsc2289-s.webp" alt="" loading="lazy">Nature</a></div>
       <div class="nav__item"><a href="astronomie.html"><img src="assets/photos/astronomie/aurores-boreales/dsc6161-modifier-s.webp" alt="" loading="lazy">Astronomie</a></div>
       <div class="nav__item"><a href="a-propos.html">À propos</a></div>
       <!-- nav:fin --></nav>
@@ -57,7 +63,7 @@
     </section>
     <!-- suivante:debut -->
     <a class="suivante" href="corse.html">
-      <img src="assets/photos/corse/dsc0337-modifier.webp" alt="" loading="lazy">
+      <img src="assets/photos/corse/dsc0862.webp" alt="" loading="lazy">
       <div>
         <span class="surtitre">Série suivante</span>
         <h2>Corse</h2>
@@ -71,9 +77,5 @@
     <a href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
   </footer>
 
-  <script src="assets/data/photos.js" defer></script>
-  <script src="assets/data/gabarits.js" defer></script>
-  <script src="assets/data/disposition.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
