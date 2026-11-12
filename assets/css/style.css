@@ -526,6 +526,14 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 }
 .galerie--libre .vue { position: absolute; inset: var(--g); overflow: hidden; background: var(--fond-2); }
 .galerie--libre .vue img { position: absolute; max-width: none; }
+/* Apparition des photos : la case est là d'emblée (fond discret), la photo y arrive en fondu avec un
+   léger dézoom, une fois entrée à l'écran et chargée. Décalage court d'une case à l'autre (--delai). */
+.js .galerie--libre a.tuile .vue img {
+  opacity: 0; transform: scale(1.05);
+  transition: opacity 0.9s ease var(--delai, 0s), transform 1.6s var(--doux) var(--delai, 0s);
+}
+.js .galerie--libre a.tuile.est-visible.est-chargee .vue img { opacity: 1; transform: none; }
+.js .galerie--libre a.tuile.est-visible.est-chargee:hover .vue img { transform: scale(1.04); transition-delay: 0s; }
 
 /* ---------- Mode édition (serveur local uniquement) ---------- */
 
