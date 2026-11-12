@@ -143,32 +143,6 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .nav { display: flex; gap: clamp(1.1rem, 2.4vw, 2.5rem); }
 .nav__item { position: relative; }
 
-/* Sous-catégories : pilule légère au survol, les sous-catégories côte à côte séparées par un point doré.
-   Quand l'en-tête a son fond (après défilement), il s'agrandit pour contenir la pilule au lieu d'être coupé. */
-.nav__sous {
-  position: absolute; left: 50%; top: calc(100% + 0.6rem);
-  display: flex; align-items: center;
-  padding: 0.15rem 0.4rem; border-radius: 999px;
-  background: rgba(11, 13, 16, 0.38);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4);
-  box-shadow: inset 0 0 0 1px rgba(236, 232, 225, 0.16);
-  opacity: 0; visibility: hidden; transform: translate(-50%, 8px);
-  transition: opacity 0.35s ease, transform 0.5s var(--doux), visibility 0.35s, background-color 0.4s;
-}
-.nav__sous::before { content: ''; position: absolute; left: 0; right: 0; top: -0.8rem; height: 0.8rem; } /* garde le survol entre l'onglet et la pilule */
-.nav__item:hover .nav__sous, .nav__item:focus-within .nav__sous { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
-.nav .nav__sous a { font-size: 0.66rem; letter-spacing: 0.16em; padding: 0.7em 0.95em; white-space: nowrap; opacity: 0.8; transition: opacity 0.3s, color 0.3s; }
-.nav .nav__sous a::after { display: none; }
-.nav .nav__sous a + a::before {
-  content: ''; position: absolute; left: 0; top: 50%; width: 3px; height: 3px; margin-top: -1.5px;
-  border-radius: 50%; background: var(--accent); opacity: 0.6;
-}
-.nav .nav__sous a:hover { opacity: 1; color: var(--accent); }
-@media (min-width: 981px) {
-  .entete.est-pleine:has(.nav__item:hover > .nav__sous),
-  .entete.est-pleine:has(.nav__item:focus-within > .nav__sous) { padding-bottom: 3.7rem; }
-  .entete.est-pleine .nav__sous { background: rgba(236, 232, 225, 0.04); }
-}
 .nav a {
   position: relative;
   font-size: 0.76rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
@@ -245,7 +219,6 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   .nav__item > a[aria-current='page'] img { outline: 1px solid var(--accent); outline-offset: 3px; }
 
   /* Les sous-parties ne figurent pas dans le menu mobile : elles sont dans le bandeau de chaque série */
-  .nav__sous { display: none; }
 
   .nav__pied {
     display: flex; justify-content: space-between; gap: 1rem; margin: auto 0 0; padding-top: 1.75rem;
