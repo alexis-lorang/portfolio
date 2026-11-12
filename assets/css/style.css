@@ -129,9 +129,10 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   transition: font-size 0.4s var(--doux);
 }
 .logo__nom {
-  font-family: var(--serif); font-size: 1em; font-weight: 500; letter-spacing: 0.02em; line-height: 1;
-  margin-right: -0.02em; /* annule l'espacement après la dernière lettre */
+  /* Nom calligraphié, « Lorang » en doré */
+  font-family: 'Italianno', var(--serif); font-size: 1.55em; font-weight: 400; letter-spacing: 0; line-height: 1;
 }
+.logo__nom em { font-style: normal; color: #f0bd85; }
 .logo__sous {
   font-family: var(--sans); font-size: 0.31em; font-weight: 600; letter-spacing: 0.185em; text-transform: uppercase; line-height: 1;
   margin-right: -0.185em;
