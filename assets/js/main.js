@@ -278,22 +278,8 @@
         a.dataset.case = (w / h).toFixed(4);
         Galerie.cadrer(a);
       }
-      Galerie.marquerCibles(grille, dispo);
     },
 
-    /* Points d'accroche du défilement : une photo est une cible sauf si une autre photo plus haute
-       la couvre entièrement en hauteur (ex. deux photos empilées à côté d'une grande : seule la grande
-       compte). Pour plusieurs photos de même hauteur sur la même rangée, seule la première compte. */
-    marquerCibles(grille, dispo) {
-      const e = 0.01;
-      const cases = [...grille.children].map((a) => [a, dispo[a.dataset.id][1], dispo[a.dataset.id][3]]);
-      cases.forEach(([a, y, h], i) => {
-        const couverte = cases.some(
-          ([, y2, h2], j) => j !== i && y2 <= y + e && y2 + h2 >= y + h - e && (h2 > h + e || (Math.abs(h2 - h) <= e && j < i))
-        );
-        a.classList.toggle('cible', !couverte);
-      });
-    },
 
     rendre() {
       Galerie.ajusterLargeur();
@@ -486,94 +472,6 @@
       addEventListener('resize', demander);
       suivre();
     }
-    /* Défilement freiné près des photos : rien ne bouge tout seul. D'un centre de photo « .cible » au
-       suivant, la vitesse suit une courbe ease-in / ease-out : départ, accélération, vitesse de croisière,
-       puis net ralentissement en approchant du centre suivant, avec un court palier très lent sur le centre :
-       un geste (ou l'inertie du trackpad) qui y arrive s'y pose. Un nouveau geste lancé depuis un centre
-       repart presque à vitesse normale, pour ne jamais avoir à forcer.
-       Chaque cran de molette (ou geste du trackpad) fait plus ou moins avancer la page selon cette courbe.
-       Hors de ces zones, le défilement du navigateur n'est pas touché. Ordinateur uniquement, hors mode
-       édition, visionneuse ouverte et « mouvement réduit ». Clavier et barre de défilement : inchangés. */
-    (() => {
-      const ecran = matchMedia('(min-width: 761px) and (hover: hover)');
-      const APPROCHE = 0.35; // ralentissement avant un centre, en fraction de la hauteur de l'écran
-      const PALIER = 0.025; // de part et d'autre du centre : vitesse minimale
-      const MINI = 0.1; // vitesse sur le palier (1 = vitesse normale, dite de croisière)
-      const DEPART = 0.3; // geste qui traverse un centre : longueur de la reprise de vitesse
-      const RELANCE = 0.12; // nouveau geste lancé depuis un centre : reprise courte…
-      const RELANCE_MINI = 0.5; // …qui part déjà de la moitié de la vitesse normale
-      const PAUSE = 160; // ms sans molette : le geste suivant est un nouveau geste
-      const lisse = (t) => t * t * (3 - 2 * t); // ease-in / ease-out
-      let reste = 0, anim = 0, dernier = 0, origine = null; // origine : centre d'où part le geste en cours
-
-      const centres = () =>
-        [...racine.querySelectorAll('a.cible')].map((a) => {
-          const r = a.getBoundingClientRect();
-          return r.top + scrollY + r.height / 2;
-        });
-
-      // Centres de photo les plus proches devant et derrière, dans le sens « sens » : [distance, centre].
-      // Le centre d'où part le geste compte toujours comme « derrière ».
-      const distances = (y, sens) => {
-        const milieu = y + innerHeight / 2;
-        let devant = [Infinity, null], derriere = [Infinity, null];
-        for (const c of centres()) {
-          const d = (c - milieu) * sens; // > 0 : centre encore devant
-          if (d >= 0 && c !== origine) { if (d < devant[0]) devant = [d, c]; }
-          else if (Math.abs(d) < derriere[0]) derriere = [Math.abs(d), c];
-        }
-        return [devant, derriere];
-      };
-
-      // Vitesse à appliquer à la position y (haut de l'écran) en allant dans le sens « sens ».
-      const vitesse = (y, sens) => {
-        const [[devant], [derriere, c]] = distances(y, sens);
-        const h = innerHeight, moitie = (devant + derriere) / 2; // deux photos proches se partagent l'intervalle
-        const rampe = (d, zone, palier, mini) => {
-          zone = Math.min(zone, moitie);
-          palier = Math.min(palier, zone / 2);
-          return d >= zone ? 1 : d <= palier ? mini : mini + (1 - mini) * lisse((d - palier) / (zone - palier));
-        };
-        return Math.min(
-          rampe(devant, h * APPROCHE, h * PALIER, MINI),
-          c !== null && c === origine
-            ? rampe(derriere, h * RELANCE, 0, RELANCE_MINI)
-            : rampe(derriere, h * DEPART, h * PALIER, MINI)
-        );
-      };
-
-      const avancer = () => {
-        const pas = Math.abs(reste) < 1 ? reste : reste * 0.35; // le geste est rendu en quelques images
-        reste -= pas;
-        scrollTo({ top: scrollY + pas, behavior: 'instant' });
-        anim = reste ? requestAnimationFrame(avancer) : 0;
-      };
-
-      addEventListener('wheel', (e) => {
-        if (calme || !ecran.matches || e.ctrlKey || !e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-        if (doc.classList.contains('edition') || document.body.style.overflow === 'hidden') return;
-        const dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? innerHeight : 1);
-        if (Math.sign(dy) !== Math.sign(reste)) reste = 0; // changement de sens : on suit aussitôt
-        // Nouveau geste : s'il part d'un centre (dans sa zone de reprise), il repart sans effort.
-        if (e.timeStamp - dernier > PAUSE) {
-          // centre sur lequel on se trouve (palier) ou déjà dépassé, à moins d'une reprise de distance
-          const milieu = scrollY + reste + innerHeight / 2, sens = Math.sign(dy);
-          origine = null;
-          for (const c of centres()) {
-            const d = (c - milieu) * sens;
-            if (d <= innerHeight * PALIER && -d < innerHeight * DEPART && (origine === null || Math.abs(c - milieu) < Math.abs(origine - milieu)))
-              origine = c;
-          }
-        }
-        dernier = e.timeStamp;
-        const k = vitesse(scrollY + reste, Math.sign(dy));
-        if (k === 1 && !reste) return; // loin des photos : défilement normal du navigateur
-        e.preventDefault();
-        reste += dy * k;
-        if (!anim) anim = requestAnimationFrame(avancer);
-      }, { passive: false });
-    })();
-
     if (location.hash.length > 1) document.getElementById(location.hash.slice(1))?.scrollIntoView();
   }
 
