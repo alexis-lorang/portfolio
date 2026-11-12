@@ -63,6 +63,10 @@ window.CADRAGE = {
  },
  "suivante/astronomie": {
   "dsc4957": [0.5, 0.173, 1]
+ },
+ "astronomie/astrophotographie": {
+  "orion-final": [0.522, 0.439, 1.157, 270],
+  "sadr": [0.5, 0.474, 1, 90]
  }
 };
 
