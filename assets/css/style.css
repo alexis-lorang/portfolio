@@ -611,6 +611,36 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .js .devoile.est-visible img { transform: none; }
 .js .serie.devoile.est-visible:hover img { transform: scale(1.06); transition-duration: 1.6s; }
 
+/* ---------- Matériel (À propos) ---------- */
+
+/* Les objets détourés posés sur le fond du site, chacun sous une lumière douce
+   (halo assez marqué pour détacher les objectifs noirs du fond, sans bord visible). */
+.materiel__liste {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 3vw, 3rem);
+}
+.materiel__liste li { text-align: center; }
+.materiel__objet { position: relative; height: 16rem; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 1.75rem; }
+.materiel__objet::before { /* lumière : un seul halo, à décroissance très progressive */
+  content: ''; position: absolute; inset: -12% -6% -40%; pointer-events: none;
+  background: radial-gradient(ellipse 38% 40% at 50% 46%,
+    rgba(236, 232, 225, 0.22) 0%, rgba(236, 232, 225, 0.17) 18%, rgba(236, 232, 225, 0.11) 36%,
+    rgba(236, 232, 225, 0.06) 54%, rgba(236, 232, 225, 0.025) 72%, transparent 100%);
+}
+.materiel__objet img {
+  position: relative; z-index: 1; height: calc(12.5rem * var(--h, 1)); width: auto;
+  filter: drop-shadow(0 16px 12px rgba(0, 0, 0, 0.55));
+}
+.materiel__objet .materiel__boitier { height: auto; width: min(15.5rem, 80%); margin-bottom: 0.4rem; }
+.materiel__liste h3, .materiel__liste p { position: relative; } /* au-dessus du halo */
+.materiel__liste h3 { font-size: 1.75rem; margin: 1.1rem 0 0.4rem; }
+.materiel__liste p { margin: 0; color: var(--discret); font-size: 0.85rem; letter-spacing: 0.06em; }
+@media (max-width: 760px) {
+  .materiel__liste { grid-template-columns: 1fr; gap: 2.5rem; }
+  .materiel__objet { height: 14rem; }
+  .materiel__objet img { height: calc(10.5rem * var(--h, 1)); }
+}
+
 /* ---------- Série suivante ---------- */
 
 .suivante {
