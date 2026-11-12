@@ -484,83 +484,54 @@
       addEventListener('resize', demander);
       suivre();
     }
-    /* Défilement aimanté, en douceur : une fois le défilement arrêté, si le centre d'une photo « .cible »
-       est juste devant (dans le sens où l'on défilait, à moins d'un quart d'écran), la page glisse
-       lentement jusqu'à le centrer. Jamais de retour en arrière ; toute action de l'utilisateur
-       (molette, trackpad, clavier, clic) l'interrompt aussitôt. Ordinateur uniquement, hors mode
-       édition, visionneuse ouverte, « mouvement réduit », et après un lien vers une partie de la page
-       (sommaire, repère, « Défiler », adresse avec #) tant qu'on n'a pas défilé soi-même. */
-    const aimant = (() => {
+    /* Défilement freiné près des photos : rien ne bouge tout seul. En approchant du centre d'une photo
+       « .cible », chaque cran de molette (ou geste du trackpad) fait un peu moins avancer la page, ce qui
+       la laisse « se poser » sur la photo ; une fois le centre passé, la vitesse normale revient vite.
+       Hors de ces zones, le défilement du navigateur n'est pas touché. Ordinateur uniquement, hors mode
+       édition, visionneuse ouverte et « mouvement réduit ». Clavier et barre de défilement : inchangés. */
+    (() => {
       const ecran = matchMedia('(min-width: 761px) and (hover: hover)');
-      const ATTENTE = 180; // ms sans défilement avant de considérer qu'il est arrêté
-      const PORTEE = 0.25; // distance maximale, en fraction de la hauteur de l'écran
-      let suspendu = false, auto = false, anim = 0, minuterie = 0, sens = 0, dernierY = scrollY, appui = false;
+      const APPROCHE = 0.3; // zone de freinage avant le centre, en fraction de la hauteur de l'écran
+      const DEPART = 0.08; // distance après le centre pour retrouver la vitesse normale
+      const MINI = 0.4; // vitesse au centre (1 = normale)
+      const lisse = (t) => t * t * (3 - 2 * t);
+      let reste = 0, anim = 0;
 
-      const arreter = () => {
-        cancelAnimationFrame(anim);
-        auto = false;
-      };
-      const doux = (t) => 0.5 - Math.cos(Math.PI * t) / 2; // départ et arrivée en douceur
-
-      const glisser = (dy) => {
-        const depart = scrollY, debut = performance.now();
-        const duree = Math.min(1000, 500 + Math.abs(dy) * 1.5);
-        auto = true;
-        const pas = (t) => {
-          const k = Math.min(1, (t - debut) / duree);
-          scrollTo({ top: depart + dy * doux(k), behavior: 'instant' });
-          if (k < 1) anim = requestAnimationFrame(pas);
-          else requestAnimationFrame(() => ((auto = false), (dernierY = scrollY)));
-        };
-        anim = requestAnimationFrame(pas);
-      };
-
-      const tenter = () => {
-        if (suspendu || appui || calme || !ecran.matches || !sens) return;
-        if (doc.classList.contains('edition') || document.body.style.overflow === 'hidden') return;
-        const milieu = innerHeight / 2, portee = innerHeight * PORTEE;
-        let meilleur = null;
+      // Vitesse à appliquer à la position y (haut de l'écran) en allant dans le sens « sens ».
+      const vitesse = (y, sens) => {
+        const milieu = y + innerHeight / 2;
+        let devant = Infinity, derriere = Infinity;
         for (const a of racine.querySelectorAll('a.cible')) {
           const r = a.getBoundingClientRect();
-          const d = r.top + r.height / 2 - milieu;
-          if (d * sens > 1 && Math.abs(d) <= portee && (meilleur === null || Math.abs(d) < Math.abs(meilleur))) meilleur = d;
+          const d = (r.top + scrollY + r.height / 2 - milieu) * sens; // > 0 : centre encore devant
+          if (d >= 0) devant = Math.min(devant, d);
+          else derriere = Math.min(derriere, -d);
         }
-        if (meilleur !== null) glisser(meilleur);
+        const f = (d, zone) => (d >= zone ? 1 : MINI + (1 - MINI) * lisse(d / zone));
+        return Math.min(f(devant, innerHeight * APPROCHE), f(derriere, innerHeight * DEPART));
       };
 
-      addEventListener('scroll', () => {
-        if (auto) return;
-        const y = scrollY;
-        if (y !== dernierY) sens = Math.sign(y - dernierY);
-        dernierY = y;
-        clearTimeout(minuterie);
-        minuterie = setTimeout(tenter, ATTENTE);
-      }, { passive: true });
-
-      // L'utilisateur reprend la main : on lâche tout, sans jamais lutter contre lui.
-      const reprendre = () => {
-        arreter();
-        suspendu = false;
+      const avancer = () => {
+        const pas = Math.abs(reste) < 1 ? reste : reste * 0.35; // le geste est rendu en quelques images
+        reste -= pas;
+        scrollTo({ top: scrollY + pas, behavior: 'instant' });
+        anim = reste ? requestAnimationFrame(avancer) : 0;
       };
-      ['wheel', 'touchstart', 'keydown'].forEach((t) => addEventListener(t, reprendre, { passive: true }));
-      addEventListener('mousedown', () => ((appui = true), arreter()));
-      addEventListener('mouseup', () => {
-        appui = false;
-        clearTimeout(minuterie);
-        minuterie = setTimeout(tenter, ATTENTE);
-      });
 
-      return { suspendre: () => ((suspendu = true), arreter(), clearTimeout(minuterie)) };
+      addEventListener('wheel', (e) => {
+        if (calme || !ecran.matches || e.ctrlKey || !e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+        if (doc.classList.contains('edition') || document.body.style.overflow === 'hidden') return;
+        const dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? innerHeight : 1);
+        if (Math.sign(dy) !== Math.sign(reste)) reste = 0; // changement de sens : on suit aussitôt
+        const k = vitesse(scrollY + reste, Math.sign(dy));
+        if (k === 1 && !reste) return; // loin des photos : défilement normal du navigateur
+        e.preventDefault();
+        reste += dy * k;
+        if (!anim) anim = requestAnimationFrame(avancer);
+      }, { passive: false });
     })();
-    document.addEventListener('click', (e) => {
-      const lien = e.target.closest('a[href*="#"]');
-      if (lien && lien.pathname === location.pathname && lien.hash) aimant.suspendre();
-    });
 
-    if (location.hash.length > 1) {
-      aimant.suspendre();
-      document.getElementById(location.hash.slice(1))?.scrollIntoView();
-    }
+    if (location.hash.length > 1) document.getElementById(location.hash.slice(1))?.scrollIntoView();
   }
 
   // Recadrage : touche « V », uniquement avec le serveur local (node outils/serveur.mjs).
