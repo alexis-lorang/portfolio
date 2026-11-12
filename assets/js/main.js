@@ -278,6 +278,21 @@
         a.dataset.case = (w / h).toFixed(4);
         Galerie.cadrer(a);
       }
+      Galerie.marquerCibles(grille, dispo);
+    },
+
+    /* Points d'accroche du défilement : une photo est une cible sauf si une autre photo plus haute
+       la couvre entièrement en hauteur (ex. deux photos empilées à côté d'une grande : seule la grande
+       compte). Pour plusieurs photos de même hauteur sur la même rangée, seule la première compte. */
+    marquerCibles(grille, dispo) {
+      const e = 0.01;
+      const cases = [...grille.children].map((a) => [a, dispo[a.dataset.id][1], dispo[a.dataset.id][3]]);
+      cases.forEach(([a, y, h], i) => {
+        const couverte = cases.some(
+          ([, y2, h2], j) => j !== i && y2 <= y + e && y2 + h2 >= y + h - e && (h2 > h + e || (Math.abs(h2 - h) <= e && j < i))
+        );
+        a.classList.toggle('cible', !couverte);
+      });
     },
 
     rendre() {
@@ -469,7 +484,22 @@
       addEventListener('resize', demander);
       suivre();
     }
-    if (location.hash.length > 1) document.getElementById(location.hash.slice(1))?.scrollIntoView();
+    /* Défilement aimanté (style.css) : suspendu quand on suit un lien vers une partie de la page
+       (sommaire, repère, « Défiler », adresse avec #), pour arriver sur le titre visé ;
+       il reprend dès qu'on fait défiler soi-même. */
+    const racineDoc = document.documentElement;
+    const suspendreAimant = () => (racineDoc.style.scrollSnapType = 'none');
+    const reprendreAimant = () => racineDoc.style.removeProperty('scroll-snap-type');
+    document.addEventListener('click', (e) => {
+      const lien = e.target.closest('a[href*="#"]');
+      if (lien && lien.pathname === location.pathname && lien.hash) suspendreAimant();
+    });
+    ['wheel', 'touchstart', 'keydown'].forEach((t) => addEventListener(t, reprendreAimant, { passive: true }));
+
+    if (location.hash.length > 1) {
+      suspendreAimant();
+      document.getElementById(location.hash.slice(1))?.scrollIntoView();
+    }
   }
 
   // Recadrage : touche « V », uniquement avec le serveur local (node outils/serveur.mjs).

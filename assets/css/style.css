@@ -473,12 +473,20 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .section--galerie { padding-top: clamp(2.5rem, 5vw, 4.5rem); scroll-margin-top: 1rem; }
 /* Galerie élargie : aussi large que possible, tant que la photo la plus haute du site
    (rapport largeur / hauteur de sa case, --galerie-rapport, calculé dans main.js) tient dans l'écran
-   avec 1rem de marge en haut et en bas. Même largeur pour toutes les séries. */
+   avec 2,5rem de marge en haut et en bas. Même largeur pour toutes les séries. */
 @media (min-width: 761px) {
   .section--galerie .conteneur {
-    max-width: calc((100vh - 2rem) * var(--galerie-rapport, 1.7778));
-    max-width: calc((100svh - 2rem) * var(--galerie-rapport, 1.7778));
+    max-width: calc((100vh - 5rem) * var(--galerie-rapport, 1.7778));
+    max-width: calc((100svh - 5rem) * var(--galerie-rapport, 1.7778));
   }
+}
+/* Défilement aimanté : quand on s'arrête près d'une photo, la page se cale sur son centre vertical.
+   Seules les photos « .cible » comptent (main.js) : une photo empilée à côté d'une plus haute
+   qui la couvre en hauteur n'en est pas une. Désactivé sur mobile et en mode édition. */
+@media (min-width: 761px) and (hover: hover) {
+  html { scroll-snap-type: y proximity; }
+  html.edition { scroll-snap-type: none; }
+  .galerie--libre a.cible { scroll-snap-align: center; }
 }
 
 /* Repère fixe à droite : la partie en cours pendant le défilement */
