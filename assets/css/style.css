@@ -392,16 +392,13 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .series .serie { grid-column: span 2; aspect-ratio: auto; height: 100%; max-height: none; }
 .series .serie:nth-child(-n + 2) { grid-column: span 3; }
 .series .serie:nth-child(n + 3) h3 { font-size: clamp(2rem, 3.4vw, 3.4rem); }
-/* Mobile : une colonne, trois cartes tiennent ensemble dans la hauteur de l'écran
-   (même marge que sur ordinateur, moins les deux espaces entre cartes).
-   lvh et non svh : sur iPhone, les barres du navigateur se replient quand on descend
-   jusqu'aux séries ; svh (écran avec les barres) donnait des cartes trop basses. */
+/* Mobile : une colonne de cartes de proportions fixes (16:10, environ 220 pt de haut sur un
+   iPhone). Une hauteur calculée sur l'écran donnait des cartes trop basses dans Chrome sur
+   iPhone, dont les barres restent affichées et ne laissent qu'environ 650 pt à la page. */
 @media (max-width: 760px) {
   .series { grid-template-columns: 1fr; grid-template-rows: none; height: auto; min-height: 0; }
   .series .serie:nth-child(n) {
-    grid-column: auto; aspect-ratio: auto; min-height: 10rem;
-    height: calc((100vh - 5rem - var(--entete-h, 0px) - 1.5rem) / 3);
-    height: calc((100lvh - 5rem - var(--entete-h, 0px) - 1.5rem) / 3);
+    grid-column: auto; aspect-ratio: 16 / 10; height: auto; min-height: 0;
     padding: 1.25rem;
   }
   .series .serie:nth-child(n) h3 { font-size: 2.2rem; }
