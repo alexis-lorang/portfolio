@@ -328,7 +328,7 @@
           a.href = grand;
           a.dataset.id = p.id;
           a.dataset.ratio = (p.w / p.h).toFixed(4);
-          a.className = Galerie.edition ? '' : 'apparait';
+          a.className = Galerie.edition ? '' : 'tuile';
           a.style.setProperty('--r', a.dataset.ratio);
           a.style.setProperty('--delai', `${(n % 4) * 0.07}s`);
           const img = new Image(p.w, p.h);
@@ -339,6 +339,8 @@
           img.loading = i < 6 ? 'eager' : 'lazy';
           img.decoding = 'async';
           img.draggable = false;
+          // la photo n'apparaît qu'une fois prête (voir .tuile dans style.css)
+          img.decode().catch(() => {}).then(() => a.classList.add('est-chargee'));
           const vue = document.createElement('span');
           vue.className = 'vue';
           vue.append(img);
@@ -353,7 +355,7 @@
         Galerie.placer(grille, dispo);
         racine.append(section);
       }
-      racine.querySelectorAll('.apparait').forEach(observer);
+      racine.querySelectorAll('.apparait, .tuile').forEach(observer);
       document.querySelectorAll('[data-compte]').forEach((el) => (el.textContent = photos.length));
     },
   };
@@ -485,35 +487,58 @@
       suivre();
     }
     /* Défilement freiné près des photos : rien ne bouge tout seul. D'un centre de photo « .cible » au
-       suivant, la vitesse suit une courbe ease-in / ease-out : départ lent, accélération, vitesse de
-       croisière, puis ralentissement en approchant du centre suivant, où la page « se pose ».
+       suivant, la vitesse suit une courbe ease-in / ease-out : départ, accélération, vitesse de croisière,
+       puis net ralentissement en approchant du centre suivant, avec un court palier très lent sur le centre :
+       un geste (ou l'inertie du trackpad) qui y arrive s'y pose. Un nouveau geste lancé depuis un centre
+       repart presque à vitesse normale, pour ne jamais avoir à forcer.
        Chaque cran de molette (ou geste du trackpad) fait plus ou moins avancer la page selon cette courbe.
        Hors de ces zones, le défilement du navigateur n'est pas touché. Ordinateur uniquement, hors mode
        édition, visionneuse ouverte et « mouvement réduit ». Clavier et barre de défilement : inchangés. */
     (() => {
       const ecran = matchMedia('(min-width: 761px) and (hover: hover)');
-      const APPROCHE = 0.3; // ralentissement avant un centre, en fraction de la hauteur de l'écran
-      const DEPART = 0.3; // accélération après un centre, jusqu'à la vitesse de croisière
-      const MINI = 0.3; // vitesse au centre (1 = vitesse normale, dite de croisière)
+      const APPROCHE = 0.35; // ralentissement avant un centre, en fraction de la hauteur de l'écran
+      const PALIER = 0.025; // de part et d'autre du centre : vitesse minimale
+      const MINI = 0.1; // vitesse sur le palier (1 = vitesse normale, dite de croisière)
+      const DEPART = 0.3; // geste qui traverse un centre : longueur de la reprise de vitesse
+      const RELANCE = 0.12; // nouveau geste lancé depuis un centre : reprise courte…
+      const RELANCE_MINI = 0.5; // …qui part déjà de la moitié de la vitesse normale
+      const PAUSE = 160; // ms sans molette : le geste suivant est un nouveau geste
       const lisse = (t) => t * t * (3 - 2 * t); // ease-in / ease-out
-      let reste = 0, anim = 0;
+      let reste = 0, anim = 0, dernier = 0, origine = null; // origine : centre d'où part le geste en cours
+
+      const centres = () =>
+        [...racine.querySelectorAll('a.cible')].map((a) => {
+          const r = a.getBoundingClientRect();
+          return r.top + scrollY + r.height / 2;
+        });
+
+      // Centres de photo les plus proches devant et derrière, dans le sens « sens » : [distance, centre].
+      // Le centre d'où part le geste compte toujours comme « derrière ».
+      const distances = (y, sens) => {
+        const milieu = y + innerHeight / 2;
+        let devant = [Infinity, null], derriere = [Infinity, null];
+        for (const c of centres()) {
+          const d = (c - milieu) * sens; // > 0 : centre encore devant
+          if (d >= 0 && c !== origine) { if (d < devant[0]) devant = [d, c]; }
+          else if (Math.abs(d) < derriere[0]) derriere = [Math.abs(d), c];
+        }
+        return [devant, derriere];
+      };
 
       // Vitesse à appliquer à la position y (haut de l'écran) en allant dans le sens « sens ».
       const vitesse = (y, sens) => {
-        const milieu = y + innerHeight / 2;
-        let devant = Infinity, derriere = Infinity;
-        for (const a of racine.querySelectorAll('a.cible')) {
-          const r = a.getBoundingClientRect();
-          const d = (r.top + scrollY + r.height / 2 - milieu) * sens; // > 0 : centre encore devant
-          if (d >= 0) devant = Math.min(devant, d);
-          else derriere = Math.min(derriere, -d);
-        }
-        // Entre deux photos proches, les deux rampes se partagent l'intervalle (pas de chevauchement).
-        const moitie = (devant + derriere) / 2;
-        const f = (d, zone) => (d >= zone ? 1 : MINI + (1 - MINI) * lisse(d / zone));
+        const [[devant], [derriere, c]] = distances(y, sens);
+        const h = innerHeight, moitie = (devant + derriere) / 2; // deux photos proches se partagent l'intervalle
+        const rampe = (d, zone, palier, mini) => {
+          zone = Math.min(zone, moitie);
+          palier = Math.min(palier, zone / 2);
+          return d >= zone ? 1 : d <= palier ? mini : mini + (1 - mini) * lisse((d - palier) / (zone - palier));
+        };
         return Math.min(
-          f(devant, Math.min(innerHeight * APPROCHE, moitie)),
-          f(derriere, Math.min(innerHeight * DEPART, moitie))
+          rampe(devant, h * APPROCHE, h * PALIER, MINI),
+          c !== null && c === origine
+            ? rampe(derriere, h * RELANCE, 0, RELANCE_MINI)
+            : rampe(derriere, h * DEPART, h * PALIER, MINI)
         );
       };
 
@@ -529,6 +554,18 @@
         if (doc.classList.contains('edition') || document.body.style.overflow === 'hidden') return;
         const dy = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? innerHeight : 1);
         if (Math.sign(dy) !== Math.sign(reste)) reste = 0; // changement de sens : on suit aussitôt
+        // Nouveau geste : s'il part d'un centre (dans sa zone de reprise), il repart sans effort.
+        if (e.timeStamp - dernier > PAUSE) {
+          // centre sur lequel on se trouve (palier) ou déjà dépassé, à moins d'une reprise de distance
+          const milieu = scrollY + reste + innerHeight / 2, sens = Math.sign(dy);
+          origine = null;
+          for (const c of centres()) {
+            const d = (c - milieu) * sens;
+            if (d <= innerHeight * PALIER && -d < innerHeight * DEPART && (origine === null || Math.abs(c - milieu) < Math.abs(origine - milieu)))
+              origine = c;
+          }
+        }
+        dernier = e.timeStamp;
         const k = vitesse(scrollY + reste, Math.sign(dy));
         if (k === 1 && !reste) return; // loin des photos : défilement normal du navigateur
         e.preventDefault();
