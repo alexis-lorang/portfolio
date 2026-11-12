@@ -484,17 +484,18 @@
       addEventListener('resize', demander);
       suivre();
     }
-    /* Défilement freiné près des photos : rien ne bouge tout seul. En approchant du centre d'une photo
-       « .cible », chaque cran de molette (ou geste du trackpad) fait un peu moins avancer la page, ce qui
-       la laisse « se poser » sur la photo ; une fois le centre passé, la vitesse normale revient vite.
+    /* Défilement freiné près des photos : rien ne bouge tout seul. D'un centre de photo « .cible » au
+       suivant, la vitesse suit une courbe ease-in / ease-out : départ lent, accélération, vitesse de
+       croisière, puis ralentissement en approchant du centre suivant, où la page « se pose ».
+       Chaque cran de molette (ou geste du trackpad) fait plus ou moins avancer la page selon cette courbe.
        Hors de ces zones, le défilement du navigateur n'est pas touché. Ordinateur uniquement, hors mode
        édition, visionneuse ouverte et « mouvement réduit ». Clavier et barre de défilement : inchangés. */
     (() => {
       const ecran = matchMedia('(min-width: 761px) and (hover: hover)');
-      const APPROCHE = 0.3; // zone de freinage avant le centre, en fraction de la hauteur de l'écran
-      const DEPART = 0.08; // distance après le centre pour retrouver la vitesse normale
-      const MINI = 0.4; // vitesse au centre (1 = normale)
-      const lisse = (t) => t * t * (3 - 2 * t);
+      const APPROCHE = 0.3; // ralentissement avant un centre, en fraction de la hauteur de l'écran
+      const DEPART = 0.3; // accélération après un centre, jusqu'à la vitesse de croisière
+      const MINI = 0.3; // vitesse au centre (1 = vitesse normale, dite de croisière)
+      const lisse = (t) => t * t * (3 - 2 * t); // ease-in / ease-out
       let reste = 0, anim = 0;
 
       // Vitesse à appliquer à la position y (haut de l'écran) en allant dans le sens « sens ».
@@ -507,8 +508,13 @@
           if (d >= 0) devant = Math.min(devant, d);
           else derriere = Math.min(derriere, -d);
         }
+        // Entre deux photos proches, les deux rampes se partagent l'intervalle (pas de chevauchement).
+        const moitie = (devant + derriere) / 2;
         const f = (d, zone) => (d >= zone ? 1 : MINI + (1 - MINI) * lisse(d / zone));
-        return Math.min(f(devant, innerHeight * APPROCHE), f(derriere, innerHeight * DEPART));
+        return Math.min(
+          f(devant, Math.min(innerHeight * APPROCHE, moitie)),
+          f(derriere, Math.min(innerHeight * DEPART, moitie))
+        );
       };
 
       const avancer = () => {
