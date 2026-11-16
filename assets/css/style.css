@@ -148,8 +148,20 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .nav a {
   position: relative;
   font-size: 0.76rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 0.6em 0;
+  padding: 0.6em 0; white-space: nowrap;
   opacity: 0.78; transition: opacity 0.3s;
+}
+/* Le menu doit tenir sur une ligne à côté du grand logo (haut de page) : sinon les liens passent sur
+   deux lignes et ne sont plus à la même place que dans la barre réduite. Resserré sur les écrans moyens. */
+/* Le menu reste à la même hauteur en haut de page et dans la barre réduite (sinon il remonte de
+   ~13 px quand la barre apparaît) : centré sur le logo réduit = marge 0,9rem + moitié du logo
+   (hauteur du logo ≈ 2,16 × sa taille de police, 1,5rem dans la barre). */
+@media (min-width: 981px) {
+  .nav { position: absolute; right: var(--marge); top: calc(0.9rem + 1.5rem * 1.08); transform: translateY(-50%); }
+}
+@media (min-width: 981px) and (max-width: 1180px) {
+  .nav { gap: 1rem; }
+  .nav a { font-size: 0.7rem; letter-spacing: 0.14em; }
 }
 .nav a::after {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0.15em; height: 1px;
@@ -383,15 +395,17 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
    ensemble un écran : hauteur de l'écran moins l'en-tête réduit (--entete-h, mesuré dans main.js,
    il réapparaît quand on remonte) et 2,5rem de marge en haut et en bas. */
 .series {
-  display: grid; grid-template-columns: repeat(6, 1fr); grid-template-rows: 11fr 9fr;
+  display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 11fr 9fr;
   gap: clamp(0.75rem, 1.5vw, 1.5rem); margin-top: clamp(2.5rem, 5vw, 4.5rem);
   height: calc(100vh - 5rem - var(--entete-h, 0px));
   height: calc(100svh - 5rem - var(--entete-h, 0px));
   min-height: 34rem;
 }
-.series .serie { grid-column: span 2; aspect-ratio: auto; height: 100%; max-height: none; }
-.series .serie:nth-child(-n + 2) { grid-column: span 3; }
-.series .serie:nth-child(n + 3) h3 { font-size: clamp(2rem, 3.4vw, 3.4rem); }
+/* 2 grandes cartes en haut, puis la ligne du bas se partage entre les séries restantes (3 ou 4). */
+.series .serie { grid-column: span 3; aspect-ratio: auto; height: 100%; max-height: none; }
+.series .serie:nth-child(-n + 2) { grid-column: span 6; }
+.series .serie:nth-child(3):nth-last-child(3) ~ .serie, .series .serie:nth-child(3):nth-last-child(3) { grid-column: span 4; }
+.series .serie:nth-child(n + 3) h3 { font-size: clamp(1.8rem, 2.8vw, 3.4rem); }
 /* Mobile : une colonne de cartes de proportions fixes (16:10, environ 220 pt de haut sur un
    iPhone). Une hauteur calculée sur l'écran donnait des cartes trop basses dans Chrome sur
    iPhone, dont les barres restent affichées et ne laissent qu'environ 650 pt à la page. */

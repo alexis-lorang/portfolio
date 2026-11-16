@@ -11,33 +11,30 @@ window.SITE = {
      "id": "",
      "nom": "",
      "photos": [
-      { "id": "dsc00020", "w": 1000, "h": 716, "titre": "", "lieu": "" },
-      { "id": "dsc00026", "w": 759, "h": 1000, "titre": "", "lieu": "" },
-      { "id": "dsc00033", "w": 1000, "h": 691, "titre": "", "lieu": "" },
-      { "id": "dsc00045", "w": 1000, "h": 667, "titre": "", "lieu": "" },
-      { "id": "dsc00063-modifier", "w": 1000, "h": 675, "titre": "", "lieu": "" },
-      { "id": "dsc0027", "w": 1000, "h": 707, "titre": "", "lieu": "" },
-      { "id": "dsc0303", "w": 1000, "h": 667, "titre": "", "lieu": "" },
       { "id": "dsc0488-modifier", "w": 1000, "h": 670, "titre": "", "lieu": "" },
       { "id": "dsc0503-modifier-modifier", "w": 1000, "h": 580, "titre": "", "lieu": "" },
       { "id": "dsc0602-modifier", "w": 800, "h": 1000, "titre": "", "lieu": "" },
-      { "id": "dsc0612", "w": 1000, "h": 708, "titre": "", "lieu": "" },
       { "id": "dsc1373", "w": 1000, "h": 742, "titre": "", "lieu": "" },
       { "id": "dsc1442", "w": 1000, "h": 701, "titre": "", "lieu": "" },
-      { "id": "dsc3712-modifier-modifier", "w": 1000, "h": 696, "titre": "", "lieu": "" },
       { "id": "dsc3741-modifier", "w": 1000, "h": 744, "titre": "", "lieu": "" },
       { "id": "dsc3756-modifier", "w": 799, "h": 1000, "titre": "", "lieu": "" },
-      { "id": "dsc3778", "w": 1000, "h": 763, "titre": "", "lieu": "" },
-      { "id": "dsc3974", "w": 1000, "h": 837, "titre": "", "lieu": "" },
-      { "id": "dsc4076", "w": 1000, "h": 667, "titre": "", "lieu": "" },
-      { "id": "dsc4238-modifier", "w": 1000, "h": 711, "titre": "", "lieu": "" },
-      { "id": "dsc4245", "w": 1000, "h": 737, "titre": "", "lieu": "" },
-      { "id": "dsc4938-modifier", "w": 1000, "h": 668, "titre": "", "lieu": "" },
       { "id": "dsc4957", "w": 1000, "h": 707, "titre": "", "lieu": "" },
       { "id": "dsc4992", "w": 800, "h": 1000, "titre": "", "lieu": "" },
-      { "id": "dsc5095", "w": 1000, "h": 695, "titre": "", "lieu": "" },
-      { "id": "dsc5115", "w": 1000, "h": 667, "titre": "", "lieu": "" },
-      { "id": "dsc7148", "w": 1000, "h": 667, "titre": "", "lieu": "" }
+      { "id": "dsc7148", "w": 1000, "h": 667, "titre": "", "lieu": "" },
+      { "id": "a1", "w": 1000, "h": 695, "titre": "A1", "lieu": "" },
+      { "id": "a2", "w": 759, "h": 1000, "titre": "A2", "lieu": "" },
+      { "id": "a3", "w": 1000, "h": 691, "titre": "A3", "lieu": "" },
+      { "id": "a4", "w": 1000, "h": 667, "titre": "A4", "lieu": "" },
+      { "id": "b1", "w": 1000, "h": 708, "titre": "B1", "lieu": "" },
+      { "id": "b2", "w": 1000, "h": 763, "titre": "B2", "lieu": "" },
+      { "id": "c1", "w": 1000, "h": 668, "titre": "C1", "lieu": "" },
+      { "id": "c2", "w": 1000, "h": 675, "titre": "C2", "lieu": "" },
+      { "id": "c3", "w": 1000, "h": 667, "titre": "C3", "lieu": "" },
+      { "id": "c4", "w": 1000, "h": 696, "titre": "C4", "lieu": "" },
+      { "id": "c5", "w": 1000, "h": 837, "titre": "C5", "lieu": "" },
+      { "id": "c6", "w": 1000, "h": 667, "titre": "C6", "lieu": "" },
+      { "id": "d1", "w": 1000, "h": 711, "titre": "D1", "lieu": "" },
+      { "id": "d2", "w": 1000, "h": 737, "titre": "D2", "lieu": "" }
      ]
     }
    ]
@@ -74,7 +71,10 @@ window.SITE = {
       { "id": "dsc0491-modifier", "w": 1000, "h": 716, "titre": "", "lieu": "" },
       { "id": "dsc0748-2-gigapixel", "w": 1000, "h": 429, "titre": "", "lieu": "" },
       { "id": "dsc0834", "w": 1000, "h": 645, "titre": "", "lieu": "" },
-      { "id": "dsc0916", "w": 1000, "h": 667, "titre": "", "lieu": "" }
+      { "id": "dsc0916", "w": 1000, "h": 667, "titre": "", "lieu": "" },
+      { "id": "dsc0207-panorama-2", "w": 1000, "h": 707, "titre": "", "lieu": "" },
+      { "id": "dsc0240", "w": 1000, "h": 743, "titre": "", "lieu": "" },
+      { "id": "dsc0260-panorama-modifier", "w": 1000, "h": 705, "titre": "", "lieu": "" }
      ]
     },
     {
@@ -156,7 +156,7 @@ window.SITE = {
   {
    "id": "nature",
    "nom": "Nature",
-   "couverture": "dsc2289",
+   "couverture": "dsc0860",
    "groupes": [
     {
      "id": "",
@@ -171,7 +171,29 @@ window.SITE = {
       { "id": "dsc0798-modifier-modifier", "w": 806, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc9908", "w": 699, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc0664-panorama", "w": 707, "h": 1000, "titre": "", "lieu": "" },
-      { "id": "dsc2289", "w": 1000, "h": 839, "titre": "", "lieu": "" }
+      { "id": "dsc2289", "w": 1000, "h": 839, "titre": "", "lieu": "" },
+      { "id": "dsc0860", "w": 1000, "h": 627, "titre": "", "lieu": "" },
+      { "id": "dsc0881", "w": 785, "h": 1000, "titre": "", "lieu": "" }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "hiver",
+   "nom": "Hiver",
+   "couverture": "dsc6053-modifier",
+   "groupes": [
+    {
+     "id": "",
+     "nom": "",
+     "photos": [
+      { "id": "dsc0143-modifier-modifier", "w": 800, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc1652-modifier", "w": 744, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc1656", "w": 765, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc1657-modifier", "w": 836, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc5740-modifier-modifier", "w": 653, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc5841", "w": 853, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "dsc6053-modifier", "w": 738, "h": 1000, "titre": "", "lieu": "" }
      ]
     }
    ]
@@ -183,7 +205,8 @@ window.SITE = {
    "groupes": [
     {
      "id": "aurores-boreales",
-     "nom": "Aurores boréales",
+     "nom": "Aurores boréales",
+     "annee": "",
      "photos": [
       { "id": "dsc6151-modifier", "w": 667, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc6161-modifier", "w": 1000, "h": 665, "titre": "", "lieu": "" },
@@ -193,14 +216,16 @@ window.SITE = {
     {
      "id": "astrophotographie",
      "nom": "Astrophotographie",
+     "annee": "",
      "photos": [
       { "id": "cygnus-loop", "w": 1000, "h": 824, "titre": "Cygnus Loop", "lieu": "" },
       { "id": "heart-nebula", "w": 950, "h": 1000, "titre": "Heart Nebula", "lieu": "" },
       { "id": "north-america", "w": 1000, "h": 907, "titre": "North America", "lieu": "" },
-      { "id": "sadr", "w": 798, "h": 1000, "titre": "Sadr", "lieu": "" },
+      { "id": "sadr", "w": 1000, "h": 798, "titre": "Sadr", "lieu": "" },
       { "id": "dsc4219-panorama-modifier", "w": 670, "h": 1000, "titre": "", "lieu": "" },
       { "id": "orion-final", "w": 695, "h": 1000, "titre": "Orion Nebula", "lieu": "" },
-      { "id": "pleiades-final", "w": 1000, "h": 948, "titre": "Pleiades", "lieu": "" }
+      { "id": "pleiades-final", "w": 1000, "h": 948, "titre": "Pleiades", "lieu": "" },
+      { "id": "dsc6081-modifier", "w": 667, "h": 1000, "titre": "", "lieu": "" }
      ]
     }
    ]
