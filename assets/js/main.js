@@ -699,6 +699,45 @@
     }
   });
 
+  /* ---------- Changement de page : sens du défilement (voir @view-transition dans style.css) ---------- */
+  // Rang d'une page dans le menu ; une page hors menu compte comme la dernière
+  const chemin = (url) => {
+    const c = new URL(url, location.href).pathname;
+    return c.endsWith('/') ? `${c}index.html` : c;
+  };
+  const rang = (url) => {
+    const pages = [...document.querySelectorAll('.nav a')].map((a) => chemin(a.href));
+    const i = pages.indexOf(chemin(url));
+    return i < 0 ? pages.length : i;
+  };
+  addEventListener('pagereveal', (e) => {
+    if (!e.viewTransition) return;
+    const depuis = window.navigation?.activation?.from?.url || document.referrer;
+    // même page rouverte : pas de défilement
+    if (depuis && chemin(depuis) === chemin(location.href)) return e.viewTransition.skipTransition();
+    if (depuis && rang(depuis) > rang(location.href)) e.viewTransition.types.add('arriere');
+  });
+  // Un lien vers la page où l'on est déjà (menu, logo) ne la recharge pas : il remonte en haut.
+  document.addEventListener('click', (e) => {
+    const a = e.target instanceof Element && e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (a.target && a.target !== '_self') return;
+    const url = new URL(a.href, location.href);
+    if (url.origin !== location.origin || url.hash || url.search !== location.search) return;
+    if (chemin(url.href) !== chemin(location.href)) return;
+    e.preventDefault();
+    fermerMenu();
+    scrollTo({ top: 0, behavior: calme ? 'auto' : 'smooth' });
+  });
+  // Au survol d'un lien du menu, la grande photo de la page visée est chargée d'avance
+  // (vignette du menu « nom-s.webp » → photo du bandeau « nom.webp ») : elle est prête quand la page glisse.
+  document.querySelectorAll('.nav__item > a img').forEach((vignette) => {
+    vignette.closest('a').addEventListener('pointerenter', () => {
+      const img = new Image();
+      img.src = vignette.getAttribute('src').replace(/-s\.webp$/, '.webp');
+    }, { once: true });
+  });
+
   /* ---------- Année du pied de page ---------- */
   document.querySelectorAll('[data-annee]').forEach((el) => (el.textContent = new Date().getFullYear()));
 })();

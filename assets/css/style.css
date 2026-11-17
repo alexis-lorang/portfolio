@@ -24,6 +24,7 @@
 *::after { box-sizing: border-box; }
 
 html {
+  color-scheme: dark; /* fond du navigateur sombre dès le début du chargement : pas d'éclair blanc entre deux pages */
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   background: var(--fond);
@@ -37,17 +38,36 @@ body {
   font-size: 1rem;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
-  animation: entree 0.7s ease both;
 }
 
-@keyframes entree { from { opacity: 0; } }
-
-/* Transition douce entre les pages (navigateurs récents) */
+/* Changement de page (navigateurs récents) : les pages défilent à l'horizontale comme des photos.
+   La nouvelle arrive par le côté et pousse l'ancienne, qui recule en s'assombrissant ; l'en-tête reste fixe.
+   Sens : vers la droite dans l'ordre du menu → arrive par la droite (main.js pose le type « arriere » sinon). */
 @view-transition { navigation: auto; }
-::view-transition-old(root) { animation: 0.35s ease both vt-sortie; }
-::view-transition-new(root) { animation: 0.6s ease both vt-entree; }
-@keyframes vt-sortie { to { opacity: 0; } }
-@keyframes vt-entree { from { opacity: 0; } }
+.entete { view-transition-name: entete; }
+/* L'en-tête change d'un coup, sans fondu : le fondu par défaut additionne la luminosité des deux
+   en-têtes (mode « plus-lighter »), et sur un ciel ou de la neige vus à travers le verre dépoli
+   de la barre, le résultat virait au blanc. */
+::view-transition-group(entete) { animation: none; }
+::view-transition-old(entete) { display: none; }
+::view-transition-new(entete) { animation: none; }
+/* Sous les deux pages qui glissent : le fond du site, jamais celui du navigateur */
+::view-transition { background: var(--fond); }
+::view-transition-old(root), ::view-transition-new(root) {
+  mix-blend-mode: normal;
+  background: var(--fond); /* opaques même si la photo de la nouvelle page n'est pas encore chargée */
+  animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); animation-fill-mode: both;
+}
+::view-transition-old(root) { animation-name: page-sortie; }
+::view-transition-new(root) { animation-name: page-entree; box-shadow: 0 0 90px rgba(0, 0, 0, 0.6); }
+html:active-view-transition-type(arriere)::view-transition-old(root) { animation-name: page-sortie-arriere; }
+html:active-view-transition-type(arriere)::view-transition-new(root) { animation-name: page-entree-arriere; }
+/* L'ancienne page s'assombrit par transparence au-dessus du fond sombre, sans filtre :
+   un filtre sur la capture de toute la page pouvait la faire virer au blanc d'un coup. */
+@keyframes page-sortie { to { transform: translateX(-28%); opacity: 0.45; } }
+@keyframes page-entree { from { transform: translateX(100%); } }
+@keyframes page-sortie-arriere { to { transform: translateX(28%); opacity: 0.45; } }
+@keyframes page-entree-arriere { from { transform: translateX(-100%); } }
 
 img { display: block; max-width: 100%; }
 /* Protection des photos : pas de glisser-déposer, pas de menu « Enregistrer l'image » au appui long (iOS) */
@@ -170,6 +190,9 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 }
 .nav a:hover, .nav a[aria-current='page'] { opacity: 1; }
 .nav a:hover::after, .nav a[aria-current='page']::after { transform: scaleX(1); transform-origin: left; }
+/* à l'arrivée sur une page, son soulignement se trace de gauche à droite */
+.nav a[aria-current='page']::after { animation: trace 0.8s var(--doux) 0.35s backwards; }
+@keyframes trace { from { transform: scaleX(0); } }
 
 .burger { display: none; position: relative; z-index: 2; width: 44px; height: 44px; margin-right: -10px; }
 .burger i {
@@ -631,13 +654,14 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
    (halo assez marqué pour détacher les objectifs noirs du fond, sans bord visible). */
 .materiel__liste {
   list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 3vw, 3rem);
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(2.5rem, 5vw, 4.5rem) clamp(2rem, 5vw, 5rem);
 }
-.materiel__liste li { text-align: center; }
-.materiel__objet { position: relative; height: 16rem; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 1.75rem; }
+/* Chaque objet : la photo sous son halo à gauche, le texte à droite */
+.materiel__liste li { display: grid; grid-template-columns: 13rem 1fr; gap: clamp(1.25rem, 2.5vw, 2.25rem); align-items: center; }
+.materiel__objet { position: relative; height: 15rem; display: flex; align-items: center; justify-content: center; }
 .materiel__objet::before { /* lumière : un seul halo, à décroissance très progressive */
-  content: ''; position: absolute; inset: -12% -6% -40%; pointer-events: none;
-  background: radial-gradient(ellipse 38% 40% at 50% 46%,
+  content: ''; position: absolute; inset: -18% -22% -24%; pointer-events: none;
+  background: radial-gradient(ellipse 42% 42% at 50% 50%,
     rgba(236, 232, 225, 0.22) 0%, rgba(236, 232, 225, 0.17) 18%, rgba(236, 232, 225, 0.11) 36%,
     rgba(236, 232, 225, 0.06) 54%, rgba(236, 232, 225, 0.025) 72%, transparent 100%);
 }
@@ -645,14 +669,20 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   position: relative; z-index: 1; height: calc(12.5rem * var(--h, 1)); width: auto;
   filter: drop-shadow(0 16px 12px rgba(0, 0, 0, 0.55));
 }
-.materiel__objet .materiel__boitier { height: auto; width: min(15.5rem, 80%); margin-bottom: 0.4rem; }
-.materiel__liste h3, .materiel__liste p { position: relative; } /* au-dessus du halo */
-.materiel__liste h3 { font-size: 1.75rem; margin: 1.1rem 0 0.4rem; }
-.materiel__liste p { margin: 0; color: var(--discret); font-size: 0.85rem; letter-spacing: 0.06em; }
-@media (max-width: 760px) {
-  .materiel__liste { grid-template-columns: 1fr; gap: 2.5rem; }
-  .materiel__objet { height: 14rem; }
-  .materiel__objet img { height: calc(10.5rem * var(--h, 1)); }
+.materiel__objet .materiel__boitier { height: auto; width: 74%; margin-right: 1.25rem; } /* plus large que les objectifs : réduit pour garder le même vide jusqu’au texte */
+.materiel__texte { position: relative; } /* au-dessus du halo */
+.materiel__liste h3 { font-size: clamp(1.6rem, 2.2vw, 2rem); margin: 0 0 0.35rem; }
+.materiel__fiche { margin: 0 0 1rem; color: var(--accent); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.materiel__desc { margin: 0; color: var(--discret); font-size: 0.95rem; line-height: 1.7; max-width: 32rem; }
+@media (max-width: 1180px) {
+  .materiel__liste { grid-template-columns: 1fr; max-width: 46rem; margin-inline: auto; }
+}
+@media (max-width: 560px) {
+  .materiel__liste li { grid-template-columns: 1fr; text-align: center; gap: 1.25rem; }
+  .materiel__objet { height: 13rem; }
+  .materiel__objet img { height: calc(11rem * var(--h, 1)); }
+  .materiel__objet .materiel__boitier { width: min(15rem, 80%); margin-right: 0; }
+  .materiel__desc { margin-inline: auto; }
 }
 
 /* ---------- Série suivante ---------- */

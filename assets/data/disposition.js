@@ -86,7 +86,8 @@ window.CADRAGE = {
   "dsc5841": [0.5, 0.511, 1]
  },
  "accueil/portrait": {
-  "dsc4957": [1, 0.5, 1]
+  "dsc4957": [1, 0.5, 1],
+  "a-propos": [0.7, 0.5, 1]
  }
 };
 

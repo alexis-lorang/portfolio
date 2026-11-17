@@ -6,12 +6,14 @@
   <title>À propos — Alexis Lorang, photographie de paysages</title>
   <meta name="description" content="À propos du photographe et contact.">
   <meta name="theme-color" content="#0b0d10">
+  <meta name="color-scheme" content="dark">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500&family=Italianno&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- blocking="render" : le cadrage et la mise en page sont appliqués avant le premier affichage
        (sinon la transition entre pages montre la photo de couverture mal placée puis la recale) -->
+  <script src="assets/data/disposition.js" defer blocking="render"></script>
   <script src="assets/js/main.js" defer blocking="render"></script>
 </head>
 <body>
@@ -46,26 +48,8 @@
           <p class="fondu">[Votre démarche : ce qui vous attire en montagne, pourquoi les mers de nuages, votre rapport à la lumière du matin.]</p>
           <p class="fondu">[Éventuellement : votre matériel, vos terrains de jeu favoris, vos projets à venir.]</p>
         </div>
-        <!-- À MODIFIER : remplacez cette image par votre portrait si vous le souhaitez -->
         <div class="cadre cadre--portrait devoile">
-          <img src="assets/photos/corse/dsc0173.webp" alt="Une personne assise sur un rocher face aux crêtes dans la brume">
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--serree">
-      <div class="conteneur">
-        <div class="galerie-entete apparait"><span>En quelques mots</span></div>
-        <!-- À MODIFIER : repères au choix -->
-        <div class="deux-colonnes" style="grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); align-items: start">
-          <div class="apparait">
-            <h3 style="font-size: 1.9rem; margin-bottom: .6rem">Terrain</h3>
-            <p style="color: var(--discret)">[Vos massifs et régions de prédilection]</p>
-          </div>
-          <div class="apparait" style="--delai:.08s">
-            <h3 style="font-size: 1.9rem; margin-bottom: .6rem">Tirages</h3>
-            <p style="color: var(--discret)">[Disponibles sur demande — à préciser]</p>
-          </div>
+          <img src="assets/img/a-propos.webp" alt="Le photographe de dos, appareil à l’œil, face au soleil levant sur une plaine noyée de brume" width="1500" height="1125" style="object-position: 70% 50%">
         </div>
       </div>
     </section>
@@ -73,22 +57,40 @@
     <!-- Matériel : les objets détourés, posés sur le fond sombre du site sous une lumière douce -->
     <section class="section section--serree materiel" id="materiel">
       <div class="conteneur">
-        <div class="galerie-entete apparait"><span>Matériel</span><span>1,5&nbsp;kg en tout</span></div>
+        <div class="galerie-entete apparait"><span>Matériel</span><span>2,7&nbsp;kg en tout</span></div>
+        <!-- À MODIFIER : les textes de présentation de chaque objet -->
         <ul class="materiel__liste">
           <li class="apparait">
             <div class="materiel__objet"><img class="materiel__boitier" src="assets/img/materiel/sony-a7c2.webp" alt="Sony A7C II, finition argent" width="680" height="372" loading="lazy"></div>
-            <h3>Sony A7C&nbsp;II</h3>
-            <p>Plein format 33&nbsp;Mpx · 514&nbsp;g</p>
+            <div class="materiel__texte">
+              <h3>Sony A7C&nbsp;II</h3>
+              <p class="materiel__fiche">Plein format 33&nbsp;Mpx · 514&nbsp;g</p>
+              <p class="materiel__desc">Un plein format qui tient dans un sac de randonnée sans peser sur les épaules. Ses 33&nbsp;Mpx laissent de la marge pour recadrer, et sa dynamique encaisse les contre-jours des levers de soleil.</p>
+            </div>
           </li>
           <li class="apparait" style="--delai:.08s">
             <div class="materiel__objet"><img src="assets/img/materiel/tamron-a046.webp" alt="Tamron 17-28 mm f/2,8" width="397" height="620" loading="lazy" style="--h: .85"></div>
-            <h3>Tamron 17&#8209;28&nbsp;mm</h3>
-            <p>f/2,8 constant · 420&nbsp;g</p>
+            <div class="materiel__texte">
+              <h3>Tamron 17&#8209;28&nbsp;mm</h3>
+              <p class="materiel__fiche">f/2,8 constant · 420&nbsp;g</p>
+              <p class="materiel__desc">Le grand-angle des panoramas et des nuits étoilées. Son ouverture à f/2,8 permet de saisir la Voie lactée ou une aurore sans trop monter en ISO.</p>
+            </div>
           </li>
           <li class="apparait" style="--delai:.16s">
             <div class="materiel__objet"><img src="assets/img/materiel/tamron-a071.webp" alt="Tamron 28-200 mm f/2,8-5,6" width="348" height="620" loading="lazy"></div>
-            <h3>Tamron 28&#8209;200&nbsp;mm</h3>
-            <p>f/2,8 – 5,6 · 575&nbsp;g</p>
+            <div class="materiel__texte">
+              <h3>Tamron 28&#8209;200&nbsp;mm</h3>
+              <p class="materiel__fiche">f/2,8 – 5,6 · 575&nbsp;g</p>
+              <p class="materiel__desc">L’objectif à tout faire en montagne&nbsp;: du plan large au détail d’une crête lointaine sans changer d’optique. Idéal pour isoler un sommet qui perce une mer de nuages.</p>
+            </div>
+          </li>
+          <li class="apparait" style="--delai:.24s">
+            <div class="materiel__objet"><img src="assets/img/materiel/pgytech-onego-lite-16.webp" alt="Sac à dos Pgytech OneGo Lite 16 L, coloris vert sauge" width="418" height="620" loading="lazy"></div>
+            <div class="materiel__texte">
+              <h3>Pgytech OneGo&nbsp;Lite</h3>
+              <p class="materiel__fiche">Sac photo 16&nbsp;L · 1,16&nbsp;kg</p>
+              <p class="materiel__desc">Assez compact pour la marche, assez rangé pour garder le boîtier et les deux objectifs à portée de main, avec un peu de place pour une veste et de l’eau.</p>
+            </div>
           </li>
         </ul>
       </div>
@@ -99,10 +101,9 @@
         <span class="surtitre apparait">Contact</span>
         <h2 class="apparait">Écrivez-<em>moi</em></h2>
         <a class="contact__mail apparait" href="mailto:alexis.lorang@gmail.com">alexis.lorang@gmail.com</a>
-        <!-- À MODIFIER : liens vers vos réseaux -->
+        <!-- Réseaux -->
         <div class="reseaux apparait">
           <a class="lien" href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
-          <a class="lien" href="#" >[Autre réseau]</a>
         </div>
       </div>
     </section>
