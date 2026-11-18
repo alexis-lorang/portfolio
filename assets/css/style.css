@@ -56,7 +56,9 @@ body {
 ::view-transition-old(root), ::view-transition-new(root) {
   mix-blend-mode: normal;
   background: var(--fond); /* opaques même si la photo de la nouvelle page n'est pas encore chargée */
-  animation-duration: 0.7s; animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1); animation-fill-mode: both;
+  /* Courbe « ease-out » : la page part vite dès le clic puis se pose en douceur. Une courbe
+     « ease-in-out » restait quasi immobile les premières ~150 ms, ce qui donnait l'impression d'un lag. */
+  animation-duration: 0.75s; animation-timing-function: var(--doux); animation-fill-mode: both;
 }
 ::view-transition-old(root) { animation-name: page-sortie; }
 ::view-transition-new(root) { animation-name: page-entree; box-shadow: 0 0 90px rgba(0, 0, 0, 0.6); }
