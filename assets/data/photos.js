@@ -1,5 +1,5 @@
 // Généré par outils/photos.mjs à partir du dossier Portfolio.
-// Modifiables à la main (et conservés ensuite) : « titre », « lieu », « couverture », « annee » (sous-catégorie).
+// Modifiables à la main (et conservés ensuite) : « titre », « lieu », « couverture », « annee » et « texte » (sous-catégorie).
 window.SITE = {
  "series": [
   {
@@ -48,6 +48,7 @@ window.SITE = {
      "id": "suisse",
      "nom": "Suisse",
      "annee": "2020",
+     "texte": "Une semaine dans les Alpes bernoises, à trois heures de route de chez moi. J’ai réalisé là-bas ce que j’avais longtemps eu sous les yeux sans vraiment le voir : la chance immense de vivre si près de telles merveilles.",
      "photos": [
       { "id": "dsc0235-modifier", "w": 1000, "h": 745, "titre": "", "lieu": "" },
       { "id": "dsc0299", "w": 1000, "h": 667, "titre": "", "lieu": "" },
@@ -207,6 +208,7 @@ window.SITE = {
      "id": "aurores-boreales",
      "nom": "Aurores boréales",
      "annee": "",
+     "texte": "Ce soir-là, j’ai eu la chance d’être au bon endroit au bon moment. La soirée s’annonçait banale, jusqu’à ce que le ciel français s’embrase de mille couleurs sous l’effet d’une tempête solaire d’une ampleur inédite depuis plus de vingt ans. Pas besoin de partir jusqu’au cercle polaire : cette nuit-là, le Grand Nord s’est invité chez nous.",
      "photos": [
       { "id": "dsc6151-modifier", "w": 667, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc6161-modifier", "w": 1000, "h": 665, "titre": "", "lieu": "" },
@@ -217,6 +219,7 @@ window.SITE = {
      "id": "astrophotographie",
      "nom": "Astrophotographie",
      "annee": "",
+     "texte": "J’ai grandi à Dabo, sous l’un de ces ciels étoilés qui fascinent dès l’enfance. C’est là, les yeux levés vers la nuit, qu’est née ma passion pour l’univers… et pour la photographie.",
      "photos": [
       { "id": "cygnus-loop", "w": 1000, "h": 824, "titre": "Cygnus Loop", "lieu": "" },
       { "id": "heart-nebula", "w": 950, "h": 1000, "titre": "Heart Nebula", "lieu": "" },

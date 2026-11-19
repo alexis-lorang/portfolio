@@ -373,6 +373,10 @@
           if (g.annee) titre.append(Object.assign(document.createElement('span'), { textContent: g.annee }));
           section.append(titre);
         }
+        if (g.texte) {
+          section.classList.add('groupe--texte');
+          section.append(Object.assign(document.createElement('p'), { className: 'groupe__texte apparait', textContent: g.texte }));
+        }
 
         const grille = document.createElement('div');
         grille.className = 'galerie galerie--libre';

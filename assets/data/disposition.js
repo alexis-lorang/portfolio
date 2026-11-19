@@ -73,7 +73,7 @@ window.CADRAGE = {
  },
  "astronomie/astrophotographie": {
   "orion-final": [0.522, 0.439, 1.157, 270],
-  "sadr": [0.5, 0.474, 1, 90]
+  "sadr": [0.527, 0.5, 1]
  },
  "couverture/hiver": {
   "dsc6053-modifier": [0.5, 0.605, 1]

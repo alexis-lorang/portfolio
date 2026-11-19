@@ -147,7 +147,7 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   position: relative; z-index: 2;
   /* Tout est en em : les deux lignes gardent la même largeur quelle que soit la taille du logo */
   font-size: 1.8rem;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 0.3em;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
   color: #fff;
   text-shadow: 0 1px 14px rgba(0, 0, 0, 0.45), 0 0 2px rgba(0, 0, 0, 0.25);
   transition: font-size 0.4s var(--doux);
@@ -157,9 +157,16 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   font-family: 'Italianno', var(--serif); font-size: 1.55em; font-weight: 400; letter-spacing: 0; line-height: 1;
 }
 .logo__nom em { font-style: normal; color: #f0bd85; }
+/* Placement de « Photographie de paysages », réglable avec http://localhost:4173/outils/logo
+   (valeurs proportionnelles à la taille du logo, sauf l'espacement des lettres) */
+/* reglage-logo:debut */
+.logo { --sous-taille: 0.278; --sous-lettres: 0.173; --sous-y: -0.294; --sous-x: 0.143; }
+/* reglage-logo:fin */
 .logo__sous {
-  font-family: var(--sans); font-size: 0.31em; font-weight: 600; letter-spacing: 0.185em; text-transform: uppercase; line-height: 1;
-  margin-right: -0.185em;
+  /* Calé sous « Alexis Lor », remonté à hauteur de la boucle du g */
+  font-family: var(--sans); font-size: calc(var(--sous-taille) * 1em); font-weight: 600;
+  letter-spacing: calc(var(--sous-lettres) * 1em); text-transform: uppercase; line-height: 1;
+  margin: calc(var(--sous-y) / var(--sous-taille) * 1em) calc(var(--sous-lettres) * -1em) 0 calc(var(--sous-x) / var(--sous-taille) * 1em);
   color: rgba(255, 255, 255, 0.88);
 }
 .entete.est-pleine .logo { font-size: 1.5rem; }
@@ -346,15 +353,17 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 }
 
 .hero__texte { max-width: 62rem; }
+.hero__texte h1 { line-height: 0.86; }
 .hero__texte .surtitre { color: var(--texte); opacity: 0.85; margin-bottom: 1.6rem; }
 .hero__texte p {
-  max-width: 34rem; margin: 1.6rem 0 0;
+  max-width: 34rem; margin: 3rem 0 0;
   font-size: clamp(1rem, 1.3vw, 1.15rem); color: rgba(236, 232, 225, 0.82);
 }
 
 /* Titre révélé ligne par ligne */
-.ligne { display: block; overflow: hidden; padding-bottom: 0.12em; margin-bottom: -0.12em; }
-.ligne > span { display: block; transform: translateY(110%); animation: monte 1.3s var(--doux) forwards; }
+/* La marge basse laisse passer les jambages (g, p, q) malgré l'interligne serré du titre */
+.ligne { display: block; overflow: hidden; padding-bottom: 0.3em; margin-bottom: -0.3em; }
+.ligne > span { display: block; transform: translateY(160%); animation: monte 1.3s var(--doux) forwards; }
 .ligne:nth-child(2) > span { animation-delay: 0.12s; }
 .ligne:nth-child(3) > span { animation-delay: 0.24s; }
 @keyframes monte { to { transform: none; } }
@@ -502,6 +511,12 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .groupe__titre {
   display: flex; align-items: baseline; gap: 1.2rem; flex-wrap: wrap;
   font-size: clamp(2.2rem, 4.6vw, 3.8rem); margin-bottom: clamp(1.25rem, 2.5vw, 2.25rem);
+}
+.groupe--texte .groupe__titre { margin-bottom: 0.9rem; }
+.groupe__texte {
+  max-width: 58rem; margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+  font-family: var(--serif); font-style: italic; font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.55;
+  color: rgba(236, 232, 225, 0.78);
 }
 .groupe__titre span { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--discret); }
 .sous-nav { display: flex; flex-direction: column; border-top: 1px solid rgba(236, 232, 225, 0.28); }
