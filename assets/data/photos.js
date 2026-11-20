@@ -63,6 +63,7 @@ window.SITE = {
      "id": "dolomites",
      "nom": "Dolomites",
      "annee": "2021",
+     "texte": "",
      "photos": [
       { "id": "dsc0405", "w": 1000, "h": 734, "titre": "", "lieu": "" },
       { "id": "dsc0427", "w": 1000, "h": 726, "titre": "", "lieu": "" },
@@ -82,6 +83,7 @@ window.SITE = {
      "id": "val-thorens",
      "nom": "Val Thorens",
      "annee": "2024",
+     "texte": "",
      "photos": [
       { "id": "dsc0917", "w": 894, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc0921", "w": 1000, "h": 633, "titre": "", "lieu": "" },
@@ -97,6 +99,7 @@ window.SITE = {
      "id": "aiguilles-rouges",
      "nom": "Aiguilles Rouges",
      "annee": "2025",
+     "texte": "",
      "photos": [
       { "id": "dsc2603", "w": 1000, "h": 699, "titre": "", "lieu": "" },
       { "id": "dsc2650-panorama-modifier", "w": 1000, "h": 719, "titre": "", "lieu": "" },

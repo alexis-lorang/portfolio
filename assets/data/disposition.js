@@ -4,8 +4,8 @@
 window.CADRAGE = {
  "mers-de-nuages": {
   "dsc3756-modifier": [0.536, 0.5, 1],
-  "dsc4992": [0.455, 0.5, 1],
-  "b2": [0.5, 0.491, 1],
+  "dsc4992": [0.451, 0.5, 1],
+  "b2": [0.5, 0.557, 1],
   "a1": [0.5, 0.495, 1],
   "c4": [0.5, 0.494, 1],
   "dsc0602-modifier": [0.47, 0.5, 1],
@@ -14,7 +14,8 @@ window.CADRAGE = {
   "a3": [0.5, 0.497, 1],
   "c1": [0.514, 0.5, 1],
   "c5": [0.5, 0.461, 1],
-  "c3": [0.515, 0.5, 1]
+  "c3": [0.515, 0.5, 1],
+  "dsc7148": [0.493, 0.5, 1]
  },
  "alpes/val-thorens": {
   "dsc1262": [0.5, 0.511, 1]
@@ -30,12 +31,15 @@ window.CADRAGE = {
  },
  "accueil/bandeau": {
   "dsc0860": [0.5, 0.755, 1],
-  "dsc3370-panorama-modifier": [0.5, 0, 1],
+  "dsc3370-panorama-modifier": [0.5, 0.16, 1],
   "dsc0672-2": [0.5, 0.228, 1],
   "dsc0581-modifier-2": [0.5, 0, 1],
-  "dsc6230-modifier-modifier-modifier": [0.5, 0.812, 1],
   "dsc0491-modifier": [0.5, 0, 1],
-  "dsc0845": [0.5, 0.535, 1]
+  "b1": [0.5, 0.748, 1],
+  "dsc0845": [0.5, 0.528, 1],
+  "dsc0351": [0.5, 0.764, 1],
+  "dsc0862": [0.5, 0.309, 1],
+  "dsc6230-modifier-modifier-modifier": [0.5, 0.591, 1]
  },
  "accueil/series": {
   "dsc4957": [0.547, 1, 1],
@@ -145,8 +149,7 @@ window.CADRAGE_MOBILE = {
   "dsc3370-panorama-modifier": [0.5, 0.14, 1]
  },
  "astronomie/astrophotographie": {
-  "orion-final": [0.531, 0.442, 1.186, 270],
-  "sadr": [0.5, 0.472, 1, 90]
+  "orion-final": [0.531, 0.442, 1.186, 270]
  },
  "couverture/hiver": {
   "dsc6053-modifier": [0.479, 0.605, 1]
