@@ -730,6 +730,8 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .contact { text-align: center; }
 .contact h2 { margin: 1.5rem auto 2rem; max-width: 12em; }
 .contact .surtitre::before { display: none; }
+.contact h2:has(+ .contact__note) { margin-bottom: 1rem; }
+.contact__note { margin: 0 auto 2rem; color: var(--discret); font-size: 1rem; }
 .contact__mail {
   font-family: var(--serif); font-size: clamp(1.5rem, 3.4vw, 2.6rem); font-style: italic;
   background: linear-gradient(var(--accent), var(--accent)) left bottom / 0 1px no-repeat;
