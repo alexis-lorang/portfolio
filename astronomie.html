@@ -10,9 +10,7 @@
   <meta name="color-scheme" content="dark">
   <meta property="og:title" content="Astronomie — Alexis Lorang, photographie de paysages">
   <meta property="og:image" content="assets/photos/astronomie/aurores-boreales/dsc6161-modifier.webp">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500&family=Italianno&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/polices.css">
   <link rel="preload" as="image" href="assets/photos/astronomie/aurores-boreales/dsc6161-modifier.webp">
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- blocking="render" : le cadrage et la mise en page sont appliqués avant le premier affichage
@@ -64,19 +62,57 @@
       </div>
     </section>
     <!-- suivante:debut -->
-    <a class="suivante" href="mers-de-nuages.html">
-      <img src="assets/photos/mers-de-nuages/dsc4957.webp" alt="" loading="lazy">
-      <div>
-        <span class="surtitre">Série suivante</span>
-        <h2>Mers de nuages</h2>
+    <section class="section section--galerie autres" aria-labelledby="autres-titre">
+      <div class="conteneur">
+        <h2 class="groupe__titre" id="autres-titre">Autres séries</h2>
+        <div class="autres__liste">
+          <a class="serie" href="mers-de-nuages.html">
+            <img src="assets/photos/mers-de-nuages/dsc4957-s.webp" srcset="assets/photos/mers-de-nuages/dsc4957-s.webp 1000w, assets/photos/mers-de-nuages/dsc4957.webp 2560w" sizes="(max-width: 760px) 50vw, 20vw" alt="" loading="lazy">
+            <div>
+              <h3>Mers de nuages</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie" href="alpes.html">
+            <img src="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier-s.webp" srcset="assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier-s.webp 1000w, assets/photos/alpes/aiguilles-rouges/dsc3370-panorama-modifier.webp 2560w" sizes="(max-width: 760px) 50vw, 20vw" alt="" loading="lazy">
+            <div>
+              <h3>Alpes</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie" href="corse.html">
+            <img src="assets/photos/corse/dsc0862-s.webp" srcset="assets/photos/corse/dsc0862-s.webp 1000w, assets/photos/corse/dsc0862.webp 2560w" sizes="(max-width: 760px) 50vw, 20vw" alt="" loading="lazy">
+            <div>
+              <h3>Corse</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie" href="nature.html">
+            <img src="assets/photos/nature/dsc0860-s.webp" srcset="assets/photos/nature/dsc0860-s.webp 1000w, assets/photos/nature/dsc0860.webp 2560w" sizes="(max-width: 760px) 50vw, 20vw" alt="" loading="lazy">
+            <div>
+              <h3>Nature</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+          <a class="serie" href="hiver.html">
+            <img src="assets/photos/hiver/dsc6053-modifier-s.webp" srcset="assets/photos/hiver/dsc6053-modifier-s.webp 738w, assets/photos/hiver/dsc6053-modifier.webp 1889w" sizes="(max-width: 760px) 50vw, 20vw" alt="" loading="lazy">
+            <div>
+              <h3>Hiver</h3>
+              <div class="serie__meta">Voir la série <svg viewBox="0 0 32 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M0 8h30M23 1l7 7-7 7"/></svg></div>
+            </div>
+          </a>
+        </div>
       </div>
-    </a>
+    </section>
     <!-- suivante:fin -->
   </main>
 
   <footer class="pied">
-    <span>© <span data-annee>2026</span> Alexis Lorang — Tous droits réservés</span>
-    <a href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
+    <p class="pied__copy">© <span data-annee>2026</span> Alexis Lorang <span class="pied__droits">— Tous droits réservés</span></p>
+    <nav class="pied__liens" aria-label="Liens utiles">
+      <a href="a-propos.html#contact">Contact</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+    </nav>
   </footer>
 
 </body>

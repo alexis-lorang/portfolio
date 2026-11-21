@@ -17,6 +17,12 @@
   --marge: clamp(1.25rem, 4vw, 4rem);
   --doux: cubic-bezier(0.22, 1, 0.36, 1);
   --rangee: 320px; /* hauteur cible d'une rangée de la grille */
+
+  /* Typographie : titres en Cormorant ; sous-titres (phrase courte sous un grand titre : bandeaux,
+     sous-catégories) en Cormorant italique ; textes courants en Manrope. */
+  --sous-titre: italic 400 clamp(1.15rem, 1.6vw, 1.35rem) / 1.55 var(--serif);
+  --intro-taille: clamp(1rem, 1.3vw, 1.15rem); /* textes courants d'introduction (présentation) */
+  --intro-couleur: rgba(236, 232, 225, 0.82);
 }
 
 *,
@@ -357,7 +363,7 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .hero__texte .surtitre { color: var(--texte); opacity: 0.85; margin-bottom: 1.6rem; }
 .hero__texte p {
   max-width: 34rem; margin: 3rem 0 0;
-  font-size: clamp(1rem, 1.3vw, 1.15rem); color: rgba(236, 232, 225, 0.82);
+  font: var(--sous-titre); color: var(--intro-couleur);
 }
 
 /* Titre révélé ligne par ligne */
@@ -370,6 +376,11 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .fondu { opacity: 0; animation: fondu 1.4s ease 0.55s forwards; }
 @keyframes fondu { to { opacity: 1; } }
 
+/* Accueil, mobile : sous-titre plus proche du titre, et plus d'air avant « Défiler ». */
+@media (max-width: 760px) {
+  .hero:not(.hero--court) .hero__texte p { margin-top: 1.5rem; }
+  .hero:not(.hero--court) { padding-bottom: calc(clamp(4.5rem, 11vh, 8rem) + 1.25rem); }
+}
 .hero__bas {
   position: absolute; left: var(--marge); right: var(--marge); bottom: 1.6rem;
   display: flex; justify-content: space-between; align-items: center;
@@ -403,12 +414,14 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   max-width: 22em; margin: 1.8rem 0 0;
 }
 .manifeste em { color: var(--accent); }
+/* Sur ordinateur, le texte occupe toute la largeur des cartes des séries juste en dessous. */
+@media (min-width: 861px) { .manifeste { max-width: none; } }
 
 .deux-colonnes {
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
   gap: clamp(2rem, 6vw, 6rem); align-items: center;
 }
-.deux-colonnes .texte { color: rgba(236, 232, 225, 0.8); max-width: 34rem; }
+.deux-colonnes .texte { color: var(--intro-couleur); font-size: var(--intro-taille); line-height: 1.7; max-width: 34rem; }
 .deux-colonnes h2 { margin: 1.4rem 0 1.8rem; color: var(--texte); }
 @media (max-width: 860px) { .deux-colonnes { grid-template-columns: 1fr; } }
 
@@ -425,28 +438,25 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 
 /* ---------- Séries (accueil) ---------- */
 
-/* Deux rangées (les deux premières séries en grand, les suivantes par trois) qui occupent
-   ensemble un écran : hauteur de l'écran moins l'en-tête réduit (--entete-h, mesuré dans main.js,
-   il réapparaît quand on remonte) et 2,5rem de marge en haut et en bas. */
+/* Toutes les séries sur un écran : deux rangées de trois cartes de même taille. Hauteur de
+   l'écran moins l'en-tête réduit (--entete-h, mesuré dans main.js, il réapparaît quand on
+   remonte) et 2,5rem de marge en haut et en bas. */
 .series {
-  display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 11fr 9fr;
+  display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr;
   gap: clamp(0.75rem, 1.5vw, 1.5rem); margin-top: clamp(2.5rem, 5vw, 4.5rem);
   height: calc(100vh - 5rem - var(--entete-h, 0px));
   height: calc(100svh - 5rem - var(--entete-h, 0px));
   min-height: 34rem;
 }
-/* 2 grandes cartes en haut, puis la ligne du bas se partage entre les séries restantes (3 ou 4). */
-.series .serie { grid-column: span 3; aspect-ratio: auto; height: 100%; max-height: none; }
-.series .serie:nth-child(-n + 2) { grid-column: span 6; }
-.series .serie:nth-child(3):nth-last-child(3) ~ .serie, .series .serie:nth-child(3):nth-last-child(3) { grid-column: span 4; }
-.series .serie:nth-child(n + 3) h3 { font-size: clamp(1.8rem, 2.8vw, 3.4rem); }
-/* Mobile : une colonne de cartes de proportions fixes (16:10, environ 220 pt de haut sur un
+.series .serie { aspect-ratio: auto; height: 100%; max-height: none; padding: clamp(1.25rem, 2.2vw, 2.5rem); }
+.series .serie h3 { font-size: clamp(1.7rem, 3.2vw, 3.6rem); }
+/* Mobile : une colonne de cartes de proportions fixes (16:9, environ 190 pt de haut sur un
    iPhone). Une hauteur calculée sur l'écran donnait des cartes trop basses dans Chrome sur
    iPhone, dont les barres restent affichées et ne laissent qu'environ 650 pt à la page. */
 @media (max-width: 760px) {
-  .series { grid-template-columns: 1fr; grid-template-rows: none; height: auto; min-height: 0; }
+  .series { grid-template-columns: 1fr; grid-auto-rows: auto; height: auto; min-height: 0; }
   .series .serie:nth-child(n) {
-    grid-column: auto; aspect-ratio: 16 / 10; height: auto; min-height: 0;
+    grid-column: auto; aspect-ratio: 16 / 9; height: auto; min-height: 0;
     padding: 1.25rem;
   }
   .series .serie:nth-child(n) h3 { font-size: 2.2rem; }
@@ -458,6 +468,9 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   aspect-ratio: 4 / 5; max-height: 86svh; width: 100%;
   padding: clamp(1.5rem, 3vw, 3rem);
   overflow: hidden; border-radius: 2px; isolation: isolate;
+  /* contour très discret : le bas des cartes (dégradé sombre pour le texte) ne se fond plus dans le fond
+     du site, notamment quand la photo est elle-même sombre en bas (Astronomie) */
+  outline: 1px solid rgba(236, 232, 225, 0.12); outline-offset: -1px;
 }
 .serie img {
   position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover;
@@ -514,9 +527,8 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 }
 .groupe--texte .groupe__titre { margin-bottom: 0.9rem; }
 .groupe__texte {
-  max-width: 58rem; margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
-  font-family: var(--serif); font-style: italic; font-size: clamp(1.1rem, 1.6vw, 1.3rem); line-height: 1.55;
-  color: rgba(236, 232, 225, 0.78);
+  max-width: none; margin: 0 0 clamp(1.5rem, 3vw, 2.5rem); /* toute la largeur de la galerie, comme le texte du portfolio */
+  font: var(--sous-titre); color: var(--intro-couleur); /* même style que le sous-titre du bandeau */
 }
 .groupe__titre span { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--discret); }
 .sous-nav { display: flex; flex-direction: column; border-top: 1px solid rgba(236, 232, 225, 0.28); }
@@ -617,11 +629,9 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .edition .hero--court.est-saisie { outline-style: solid; outline-width: 2px; }
 .edition .galerie a:hover img { transform: none; }
 /* Accueil : bandeau, cartes des séries et portrait recadrables (animations figées pour voir le cadrage final) */
-.edition .hero:not(.hero--court), .edition .series .serie, .edition .deux-colonnes .cadre { cursor: move; touch-action: none; user-select: none; outline: 1px dashed var(--accent); outline-offset: -10px; }
-.edition .hero:not(.hero--court).est-saisie, .edition .series .serie.est-saisie, .edition .deux-colonnes .cadre.est-saisie { outline-style: solid; outline-width: 2px; }
-.edition .suivante { cursor: move; touch-action: none; user-select: none; outline: 1px dashed var(--accent); outline-offset: -10px; }
-.edition .suivante.est-saisie { outline-style: solid; outline-width: 2px; }
-.edition .hero__vue img, .edition .serie img, .edition .cadre img, .edition .suivante img { animation: none !important; transform: none !important; transition: none !important; }
+.edition .hero:not(.hero--court), .edition .series .serie, .edition .autres .serie, .edition .deux-colonnes .cadre { cursor: move; touch-action: none; user-select: none; outline: 1px dashed var(--accent); outline-offset: -10px; }
+.edition .hero:not(.hero--court).est-saisie, .edition .series .serie.est-saisie, .edition .autres .serie.est-saisie, .edition .deux-colonnes .cadre.est-saisie { outline-style: solid; outline-width: 2px; }
+.edition .hero__vue img, .edition .serie img, .edition .cadre img { animation: none !important; transform: none !important; transition: none !important; }
 .edition .hero__vue { transition: none; }
 .edition .galerie a:hover .vue, .edition .galerie a.est-saisie .vue { outline: 1px solid var(--accent); outline-offset: -1px; }
 .edition .galerie a.est-saisie .vue { outline-width: 2px; outline-offset: -2px; }
@@ -647,22 +657,23 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .pivot--cadre { top: 18px; left: 18px; }
 .hero .pivot--cadre { top: calc(var(--entete-h, 82px) + 18px); }
 .pivot:hover { transform: scale(1.1); color: var(--accent); }
-.edition .galerie a:hover .pivot, .edition .hero:hover .pivot, .edition .serie:hover .pivot, .edition .suivante:hover .pivot, .edition .cadre:hover .pivot { opacity: 1; }
+.edition .galerie a:hover .pivot, .edition .hero:hover .pivot, .edition .serie:hover .pivot, .edition .cadre:hover .pivot { opacity: 1; }
 @media (hover: none) { .pivot { opacity: 1; } }
 
 /* ---------- Apparition au défilement ---------- */
 
 .js .apparait { opacity: 0; transform: translateY(28px); transition: opacity 1.1s ease, transform 1.3s var(--doux); transition-delay: var(--delai, 0s); }
 .js .apparait.est-visible { opacity: 1; transform: none; }
-/* Un cache de la couleur du fond se retire vers le bas pour dévoiler l'image */
+/* L'image se révèle en fondu depuis le fond, en se posant lentement (léger dézoom),
+   comme une photo qui sort de la pénombre. */
 .devoile { position: relative; }
-.js .devoile::before {
-  content: ''; position: absolute; inset: -1px; z-index: 3; background: var(--fond);
-  transform-origin: bottom; transition: transform 1.5s var(--doux); transition-delay: var(--delai, 0s);
+.js .devoile { background: none; } /* pas de rectangle gris avant l'apparition */
+.js .devoile img {
+  opacity: 0; transform: scale(1.06); filter: brightness(0.6);
+  transition: opacity 1.8s ease, transform 3s var(--doux), filter 2.4s ease;
+  transition-delay: var(--delai, 0s);
 }
-.js .devoile.est-visible::before { transform: scaleY(0); }
-.js .devoile img { transform: scale(1.15); transition: transform 2s var(--doux); }
-.js .devoile.est-visible img { transform: none; }
+.js .devoile.est-visible img { opacity: 1; transform: none; filter: none; }
 .js .serie.devoile.est-visible:hover img { transform: scale(1.06); transition-duration: 1.6s; }
 
 /* ---------- Matériel (À propos) ---------- */
@@ -694,59 +705,162 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 @media (max-width: 1180px) {
   .materiel__liste { grid-template-columns: 1fr; max-width: 46rem; margin-inline: auto; }
 }
+/* Mobile : petite vignette à gauche avec le nom et la fiche à côté, description en pleine largeur dessous.
+   Tout est aligné à gauche, comme le reste de la page. */
 @media (max-width: 560px) {
-  .materiel__liste li { grid-template-columns: 1fr; text-align: center; gap: 1.25rem; }
-  .materiel__objet { height: 13rem; }
-  .materiel__objet img { height: calc(11rem * var(--h, 1)); }
-  .materiel__objet .materiel__boitier { width: min(15rem, 80%); margin-right: 0; }
-  .materiel__desc { margin-inline: auto; }
+  .materiel__liste { row-gap: 4.5rem; } /* nette séparation entre les articles */
+  .materiel__liste li {
+    grid-template-columns: 7.5rem 1fr;
+    grid-template-areas: 'objet titre' 'objet fiche' 'desc desc';
+    column-gap: 1.6rem; row-gap: 0; align-items: center;
+  }
+  .materiel__texte { display: contents; } /* ses enfants se placent directement dans la grille */
+  .materiel__objet { grid-area: objet; height: 9.5rem; }
+  .materiel__objet img { height: calc(8rem * var(--h, 1)); }
+  .materiel__objet .materiel__boitier { width: 100%; margin-right: 0; }
+  .materiel__liste h3 { grid-area: titre; align-self: end; font-size: 1.45rem; }
+  .materiel__fiche { grid-area: fiche; align-self: start; margin: 0; }
+  .materiel__desc { grid-area: desc; margin-top: 0.9rem; position: relative; }
 }
 
-/* ---------- Série suivante ---------- */
-
-.suivante {
-  position: relative; display: grid; place-items: center; text-align: center;
-  min-height: 50svh; padding: 4rem var(--marge);
-  overflow: hidden; isolation: isolate;
-}
-.suivante img {
-  position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover;
-  transition: transform 2s var(--doux);
-}
-.suivante::after { content: ''; position: absolute; inset: 0; z-index: -1; background: rgba(11, 13, 16, 0.5); transition: background-color 0.8s; }
-.suivante:hover img { transform: scale(1.05); }
-.suivante:hover::after { background: rgba(11, 13, 16, 0.3); }
-.suivante h2 { font-size: clamp(3rem, 8vw, 7rem); margin-top: 1.2rem; }
-.suivante .surtitre { color: var(--texte); }
-.suivante .surtitre::before { display: none; }
-/* Sur mobile, 50 % d'un écran en hauteur reste trop grand pour un simple lien : bandeau plus bas. */
+/* ---------- Autres séries (fin de chaque série) ----------
+   Sous la galerie, à sa largeur : un fin trait marque la sortie de la série, puis les cartes
+   de l'accueil en petit (5 sur une ligne ; sur mobile, la série suivante en grand puis 2 colonnes). */
+.autres { padding-top: 0; padding-bottom: clamp(4rem, 8vw, 7rem); }
+.autres .conteneur { border-top: 1px solid var(--trait); padding-top: clamp(2.5rem, 5vw, 4rem); }
+.autres__liste { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(6px, 0.9vw, 14px); }
+.autres .serie { aspect-ratio: 3 / 4; padding: clamp(1rem, 1.6vw, 1.5rem); }
+.autres .serie h3 { font-size: clamp(1.4rem, 2.2vw, 2.1rem); }
+.autres .serie__meta { margin-top: 0.5rem; gap: 0.7rem; font-size: 0.62rem; }
 @media (max-width: 760px) {
-  .suivante { min-height: 17svh; padding: 1.5rem var(--marge); }
-  .suivante h2 { font-size: 2.4rem; margin-top: 0.5rem; }
+  .autres__liste { grid-template-columns: 1fr 1fr; }
+  .autres .serie:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+  .autres .serie h3 { font-size: 1.5rem; }
+  .autres .serie:first-child h3 { font-size: 2rem; }
 }
 
 /* ---------- Contact / pied de page ---------- */
 
 .contact { text-align: center; }
-.contact h2 { margin: 1.5rem auto 2rem; max-width: 12em; }
+/* Hiérarchie : surtitre collé au titre ; respiration nette avant le bloc « question + adresse »,
+   dont les deux lignes restent groupées. */
+.contact h2 { margin: 1.25rem auto 2.5rem; max-width: 12em; }
 .contact .surtitre::before { display: none; }
-.contact h2:has(+ .contact__note) { margin-bottom: 1rem; }
-.contact__note { margin: 0 auto 2rem; color: var(--discret); font-size: 1rem; }
-.contact__mail {
-  font-family: var(--serif); font-size: clamp(1.5rem, 3.4vw, 2.6rem); font-style: italic;
+.contact h2:has(+ .contact__note) { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+.contact__note { margin: 0 auto 0.6rem; color: var(--discret); font-size: 1rem; }
+/* Sur mobile, aligné à gauche comme la section « À propos » juste au-dessus. */
+@media (max-width: 760px) {
+  .contact { text-align: left; }
+  .contact h2, .contact__note { margin-left: 0; }
+  .contact .surtitre::before { display: block; }
+}
+/* Mail et Instagram au même niveau, chacun avec une icône au trait.
+   Les deux liens sont plus proches entre eux que de la phrase « Une question ? » : ils forment un seul groupe. */
+.contact__liens {
+  list-style: none; margin: 1.1rem 0 0; padding: 0;
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem 2.25rem;
+}
+.contact__lien {
+  display: inline-flex; align-items: center; gap: 0.6em;
+  font-family: var(--serif); font-style: italic; line-height: 1.2;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem); transition: color 0.3s;
+}
+.contact__lien svg {
+  width: 0.85em; height: 0.85em; flex: none; color: var(--accent); transition: color 0.3s; /* touche dorée */
+  fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round;
+}
+.contact__lien svg .plein { fill: currentColor; stroke: none; }
+.contact__lien span {
   background: linear-gradient(var(--accent), var(--accent)) left bottom / 0 1px no-repeat;
-  transition: background-size 0.6s var(--doux), color 0.3s; padding-bottom: 0.15em;
+  transition: background-size 0.6s var(--doux); padding-bottom: 0.12em;
 }
-.contact__mail:hover { background-size: 100% 1px; color: var(--accent); }
-.reseaux { display: flex; justify-content: center; gap: 2.5rem; margin-top: 2.8rem; flex-wrap: wrap; }
+.contact__lien:hover, .contact__lien:hover svg { color: var(--accent); }
+.contact__lien:hover span { background-size: 100% 1px; }
+@media (max-width: 760px) {
+  .contact__liens { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+}
 
-.pied {
-  display: flex; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap;
-  padding: 2rem var(--marge);
-  border-top: 1px solid var(--trait);
-  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--discret);
+/* Accueil : contact dans la colonne de droite, sous la présentation « À propos » (même alignement,
+   séparé par un fin trait). Sur mobile, il suit simplement la présentation. */
+.contact.contact--colonne { text-align: left; margin-top: clamp(3rem, 6vw, 4.5rem); padding-top: clamp(2.5rem, 5vw, 3.5rem); border-top: 1px solid var(--trait); }
+.contact.contact--colonne .surtitre::before { display: block; }
+.contact.contact--colonne h2 { margin: 1.2rem 0 1.6rem; max-width: none; font-size: clamp(1.9rem, 3vw, 2.7rem); }
+.contact.contact--colonne .contact__note { margin-left: 0; }
+.contact.contact--colonne .contact__liens { justify-content: flex-start; margin-top: 0.9rem; }
+/* Accueil, sur ordinateur : « Rêveur éveillé… » et « Une photo vous plaît… » à la même taille,
+   intermédiaire entre l'ancien titre « À propos » et l'ancien titre « Contact », pour deux blocs de même poids. */
+@media (min-width: 861px) {
+  .deux-colonnes:has(.contact--colonne) h2,
+  .deux-colonnes:has(.contact--colonne) .contact.contact--colonne h2 { font-size: clamp(2.2rem, 3.6vw, 3.3rem); }
 }
-.pied a:hover { color: var(--texte); }
+/* Accueil, une colonne (mobile, tablette) : présentation, puis la photo en paysage (moins haute),
+   puis le contact. La colonne de texte s'efface pour que la photo puisse se glisser entre les deux. */
+@media (max-width: 860px) {
+  .deux-colonnes:has(.contact--colonne) { row-gap: 0; }
+  .deux-colonnes:has(.contact--colonne) .texte { display: contents; }
+  .deux-colonnes:has(.contact--colonne) .cadre { order: 1; aspect-ratio: 4 / 3; margin: 2.5rem 0; }
+  .deux-colonnes:has(.contact--colonne) .contact--colonne { order: 2; margin-top: 0; padding-top: 0; border-top: 0; }
+}
+/* Accueil, une colonne : entre la dernière carte des séries et « À propos », le même espace
+   qu'entre la photo et « Contact » (environ 3rem). */
+@media (max-width: 860px) {
+  .section:has(.series) { padding-top: 2.5rem; padding-bottom: 3rem; } /* même respiration (≈ 48 px) avant « Le portfolio » */
+  .manifeste { font-size: 1.4rem; }
+}
+
+/* Page « Mentions légales » : texte courant, rubriques sobres, largeur de lecture confortable. */
+.legal .conteneur { max-width: 46rem; }
+.legal h1 { font-size: clamp(2.6rem, 6vw, 4.5rem); margin: 1.2rem 0 1rem; }
+.legal h2 { font-size: clamp(1.45rem, 2.4vw, 1.9rem); margin: 2.8rem 0 0.8rem; }
+.legal p { margin: 0 0 1rem; color: var(--discret); line-height: 1.75; }
+.lien-texte { color: var(--texte); text-decoration: underline; text-decoration-color: rgba(236, 232, 225, 0.35); text-underline-offset: 0.2em; transition: color 0.3s, text-decoration-color 0.3s; }
+.lien-texte:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+/* Pied de page : bande un peu plus claire que la page pour bien marquer la fin, dans le langage
+   du site (petites capitales espacées, fin trait). Ordinateur : une seule ligne, copyright à gauche,
+   liens à droite. Mobile : liens puis copyright, centrés. */
+.pied {
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem 2rem;
+  padding: clamp(1.75rem, 3vw, 2.25rem) var(--marge);
+  background: var(--fond-2); border-top: 1px solid var(--trait);
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--discret);
+}
+.pied__copy { margin: 0; }
+.pied__liens { display: flex; gap: 2.25rem; }
+.pied__liens a { color: rgba(236, 232, 225, 0.8); transition: color 0.3s; }
+.pied__liens a:hover { color: var(--accent); }
+@media (max-width: 760px) {
+  .pied { flex-direction: column-reverse; gap: 1.1rem; padding-block: 2rem; text-align: center; }
+  .pied__liens { gap: 1.75rem; }
+  .pied__copy { font-size: 0.64rem; letter-spacing: 0.12em; }
+  .pied__droits { display: none; } /* « © 2026 Alexis Lorang » suffit sur une ligne de téléphone */
+}
+
+/* ---------- Retour en haut ----------
+   Pendant du « Défiler » du bandeau : un fin trait vertical au-dessus du mot « Haut ».
+   Au survol, le trait remonte comme une goutte inversée. */
+.haut {
+  position: fixed; right: var(--marge); bottom: calc(clamp(1.25rem, 3vw, 2rem) + var(--pied, 0px)); z-index: 45;
+  display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+  padding: 0.5rem 0.25rem 0.5rem 0.51rem; /* à gauche : compense l'interlettrage pour centrer le mot */
+  border: 0; background: none; cursor: pointer;
+  font: 500 0.66rem/1 var(--sans); letter-spacing: 0.26em; text-transform: uppercase;
+  color: rgba(236, 232, 225, 0.8); text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6); /* lisible même sur une photo */
+  opacity: 0; visibility: hidden; transform: translateY(0.75rem);
+  transition: opacity 0.5s ease, visibility 0.5s, transform 0.6s var(--doux), color 0.3s;
+}
+.haut::before {
+  content: ''; width: 1px; height: 2.6rem; margin-left: -0.26em;
+  background: linear-gradient(transparent, currentColor); transform-origin: bottom;
+}
+.haut.est-visible { opacity: 1; visibility: visible; transform: none; }
+.haut:hover { color: var(--accent); }
+.haut:hover::before { animation: goutte 2.4s var(--doux) infinite; }
+.haut:focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+.menu-ouvert .haut { opacity: 0; visibility: hidden; }
+body:has(.editeur) .haut { bottom: calc(5.5rem + var(--pied, 0px)); } /* mode édition local : au-dessus de sa barre */
+/* Mobile : pas de bouton, un balayage rapide suffit pour remonter */
+@media (max-width: 760px) { .haut { display: none; } }
 
 /* ---------- Visionneuse ---------- */
 

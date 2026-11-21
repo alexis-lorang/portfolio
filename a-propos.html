@@ -7,9 +7,7 @@
   <meta name="description" content="À propos du photographe et contact.">
   <meta name="theme-color" content="#0b0d10">
   <meta name="color-scheme" content="dark">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500&family=Italianno&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/polices.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- blocking="render" : le cadrage et la mise en page sont appliqués avant le premier affichage
        (sinon la transition entre pages montre la photo de couverture mal placée puis la recale) -->
@@ -49,8 +47,25 @@
           <p class="fondu">[Éventuellement : votre matériel, vos terrains de jeu favoris, vos projets à venir.]</p>
         </div>
         <div class="cadre cadre--portrait devoile">
-          <img src="assets/img/a-propos.webp" alt="Le photographe de dos, appareil à l’œil, face au soleil levant sur une plaine noyée de brume" width="1500" height="1125" style="object-position: 70% 50%">
+          <img src="assets/img/a-propos.webp" alt="Le photographe de dos, appareil à l’œil, face au soleil levant sur une plaine noyée de brume" width="2048" height="1536" style="object-position: 70% 50%">
         </div>
+      </div>
+    </section>
+
+    <section class="section section--serree contact" id="contact">
+      <div class="conteneur">
+        <span class="surtitre apparait">Contact</span>
+        <h2 class="apparait">Une photo vous plaît, <em>un tirage vous tente&nbsp;?</em></h2>
+        <p class="contact__note apparait">Une question&nbsp;? N’hésitez pas.</p>
+        <!-- Mail et Instagram au même niveau : icône épurée + identifiant -->
+        <ul class="contact__liens apparait">
+          <li><a class="contact__lien" href="mailto:alexis.lorang@gmail.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+            <span>alexis.lorang@gmail.com</span></a></li>
+          <li><a class="contact__lien" href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener" aria-label="Instagram : alexis_lorang">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle class="plein" cx="17" cy="7" r="0.9"/></svg>
+            <span>alexis_lorang</span></a></li>
+        </ul>
       </div>
     </section>
 
@@ -103,23 +118,14 @@
         </ul>
       </div>
     </section>
-
-    <section class="section section--serree contact" id="contact">
-      <div class="conteneur">
-        <span class="surtitre apparait">Contact</span>
-        <h2 class="apparait">Écrivez-<em>moi</em></h2>
-        <a class="contact__mail apparait" href="mailto:alexis.lorang@gmail.com">alexis.lorang@gmail.com</a>
-        <!-- Réseaux -->
-        <div class="reseaux apparait">
-          <a class="lien" href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="pied">
-    <span>© <span data-annee>2026</span> Alexis Lorang — Tous droits réservés</span>
-    <a href="https://www.instagram.com/alexis_lorang/" target="_blank" rel="noopener">Instagram</a>
+    <p class="pied__copy">© <span data-annee>2026</span> Alexis Lorang <span class="pied__droits">— Tous droits réservés</span></p>
+    <nav class="pied__liens" aria-label="Liens utiles">
+      <a href="a-propos.html#contact">Contact</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+    </nav>
   </footer>
 
 </body>

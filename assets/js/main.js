@@ -9,7 +9,7 @@
   /* ---------- Protection des photos : pas de clic droit ni de glisser-déposer ---------- */
   const estPhoto = (cible) =>
     cible instanceof Element &&
-    (cible.closest('img, .galerie, .visionneuse, .hero__fond, .cadre, .serie, .suivante') !== null);
+    (cible.closest('img, .galerie, .visionneuse, .hero__fond, .cadre, .serie') !== null);
   document.addEventListener('contextmenu', (e) => estPhoto(e.target) && e.preventDefault());
   document.addEventListener('dragstart', (e) => estPhoto(e.target) && e.preventDefault());
 
@@ -39,6 +39,44 @@
   addEventListener('resize', mesurerEntete);
   document.fonts?.ready.then(mesurerEntete);
 
+  /* ---------- Retour en haut : trait vertical + « Haut » (pendant du « Défiler » du bandeau),
+     apparaît après un écran de défilement ---------- */
+  const haut = document.createElement('button');
+  haut.type = 'button';
+  haut.className = 'haut';
+  haut.setAttribute('aria-label', 'Revenir en haut de la page');
+  haut.textContent = 'Haut';
+  document.body.append(haut);
+  // Point le plus bas autorisé pour le bouton :
+  //  - pages de série, cartes « Autres séries » jusque sous le bouton : au-dessus des cartes ;
+  //  - pages de série, place à droite des cartes (grand écran) : bas du mot aligné sur le bas des cartes ;
+  //  - autres pages : au-dessus du pied de page.
+  const piedPage = document.querySelector('.pied');
+  const cartes = document.querySelector('.autres__liste');
+  const ECART = 20; // px laissés au-dessus d'une butée
+  const suivreHaut = () => {
+    haut.classList.toggle('est-visible', scrollY > innerHeight * 0.9);
+    const style = getComputedStyle(haut);
+    const decalage = parseFloat(haut.style.getPropertyValue('--pied')) || 0;
+    const basNaturel = innerHeight - (parseFloat(style.bottom) - decalage); // bas du bouton sans décalage
+    let limite = piedPage ? piedPage.getBoundingClientRect().top - ECART : Infinity;
+    if (cartes) {
+      const c = cartes.getBoundingClientRect();
+      limite = c.right + 16 > haut.getBoundingClientRect().left
+        ? c.top - ECART
+        : c.bottom + parseFloat(style.paddingBottom); // le texte (pas la zone cliquable) s'aligne sur les photos
+    }
+    haut.style.setProperty('--pied', `${Math.max(0, basNaturel - limite)}px`);
+  };
+  addEventListener('scroll', suivreHaut, { passive: true });
+  addEventListener('resize', suivreHaut);
+  new ResizeObserver(suivreHaut).observe(document.body); // la galerie se redessine après un redimensionnement
+  suivreHaut();
+  haut.addEventListener('click', () => {
+    scrollTo({ top: 0, behavior: calme ? 'auto' : 'smooth' });
+    document.querySelector('.logo')?.focus({ preventScroll: true }); // le clavier repart du haut aussi
+  });
+
   /* ---------- Menu mobile ---------- */
   const burger = document.querySelector('.burger');
   const fermerMenu = () => {
@@ -53,7 +91,7 @@
   const menu = document.querySelector('.nav');
   const pied = document.createElement('p'); // <p> : les règles « dernier .nav__item » du menu comptent les <div>
   pied.className = 'nav__pied';
-  const reseau = document.querySelector('.pied a')?.cloneNode(true);
+  const reseau = document.querySelector('.pied__liens a[href="mentions-legales.html"]')?.cloneNode(true);
   if (reseau) pied.append(reseau);
   pied.append(Object.assign(document.createElement('span'), { textContent: `© ${new Date().getFullYear()} Alexis Lorang` }));
   menu.append(pied);
@@ -362,6 +400,7 @@
         const favoris = new Set(Galerie.favoris[cle] || []);
         const dispo = Galerie.cases(cle, g.photos, favoris);
         const liste = Galerie.ordonner(g.photos.filter((p) => dispo[p.id]), dispo);
+        if (!liste.length) continue; // groupe sans photo affichée (ex. photos de couverture à la racine)
 
         const section = document.createElement('section');
         section.className = 'groupe';
@@ -424,14 +463,14 @@
   };
 
   /* Photos recadrables hors galerie : accueil (bandeau, cartes des séries, portrait) et bandeau
-     « Série suivante » en bas de chaque série. Enregistré dans CADRAGE sous « accueil/bandeau »,
-     « accueil/series », « accueil/portrait » et « suivante/<série de la page> »,
+     cartes « Autres séries » en bas de chaque série. Enregistré dans CADRAGE sous « accueil/bandeau »,
+     « accueil/series », « accueil/portrait » et « autres » (commun à toutes les séries),
      [position x, position y, zoom, rotation]. */
   const cadresAccueil = [
     ['accueil/bandeau', '.hero:not(.hero--court) .hero__vue img', '.hero'],
     ['accueil/series', '.series .serie img', '.serie'],
     ['accueil/portrait', '.deux-colonnes .cadre img', '.cadre'],
-    [`suivante/${serie?.id}`, '.suivante img', '.suivante'],
+    ['autres', '.autres .serie img', '.serie'],
   ].flatMap(([cle, choix, parent]) =>
     [...document.querySelectorAll(choix)].map((img) => ({
       img,
@@ -541,7 +580,14 @@
       const suivre = () => {
         attente = false;
         const b = zone.getBoundingClientRect();
-        repere.classList.toggle('est-visible', b.top < innerHeight * 0.5 && b.bottom > innerHeight * 0.6);
+        // N'apparaît qu'une fois le sommaire du bandeau sorti de l'écran (sous l'en-tête), pour ne pas l'afficher en double
+        const sommaireCache = sousNav.getBoundingClientRect().bottom < entete.offsetHeight;
+        // Ne s'affiche que s'il tient dans la marge à droite des photos, titres compris (ils apparaissent
+        // au survol), avec un écart confortable : jamais de titre posé sur une photo.
+        const bordPhotos = racine.getBoundingClientRect().right;
+        const bordRepere = Math.min(...liens.map((a) => a.querySelector('span').getBoundingClientRect().left));
+        const tient = bordRepere - bordPhotos >= 32;
+        repere.classList.toggle('est-visible', tient && sommaireCache && b.top < innerHeight * 0.5 && b.bottom > innerHeight * 0.6);
         let actif = 0;
         nommes.forEach((g, n) => {
           if (document.getElementById(g.id).getBoundingClientRect().top < innerHeight * 0.35) actif = n;

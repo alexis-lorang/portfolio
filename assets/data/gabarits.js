@@ -4,31 +4,35 @@
 // Seules les photos listées sont affichées : une photo absente du gabarit n'apparaît pas sur le site
 // (ajoutez-la ici pour la montrer).
 window.GABARITS = {
- "mers-de-nuages": [
+ // Photos restées à la racine de la série (couverture, etc.) : non affichées dans la galerie.
+ "mers-de-nuages": [],
+
+ "mers-de-nuages/maree-basse": [
   ["b1", 0, 0, 32, 22],
-  ["dsc7148", 32, 0, 16, 11],
+  ["dsc3741-modifier", 32, 0, 16, 11],
   ["dsc4992", 32, 11, 16, 22],
   ["a1", 0, 22, 16, 11],
-  ["b2", 16, 22, 16, 11],
+  ["b2", 16, 22, 16, 11]
+ ],
 
-  ["dsc3756-modifier", 0, 33, 16, 22],
-  ["c4", 16, 33, 32, 22],
+ "mers-de-nuages/un-village-dans-la-brume": [
+  ["c5", 0, 0, 16, 22],
+  ["a3", 16, 0, 32, 22],
 
-  ["a2", 0, 55, 16, 22],
-  ["c6", 16, 55, 16, 11],
-  ["a3", 16, 66, 16, 11],
-  ["dsc0602-modifier", 32, 55, 16, 22],
+  ["dsc0488-modifier", 0, 22, 29, 19],
+  ["dsc0602-modifier", 29, 22, 19, 19]
+ ],
 
-  ["c1", 0, 77, 32, 22],
-  ["c5", 32, 77, 16, 11],
-  ["c3", 32, 88, 16, 11],
+ "mers-de-nuages/haute-mer": [
+  ["a2", 0, 0, 16, 22],
+  ["c1", 16, 0, 32, 22],
 
-  ["c2", 0, 99, 16, 11],
-  ["d2", 0, 110, 16, 11],
-  ["d1", 16, 99, 32, 22],
+  ["c4", 0, 22, 24, 16],
+  ["c6", 24, 22, 24, 16],
 
-  ["dsc1442", 0, 121, 24, 16],
-  ["dsc0503-modifier-modifier", 24, 121, 24, 16]
+  ["d1", 0, 38, 32, 22],
+  ["dsc0503-modifier-modifier", 32, 38, 16, 11],
+  ["dsc1442", 32, 49, 16, 11]
  ],
 
  "alpes/suisse": [

@@ -2,20 +2,27 @@
 
 // Cadrage des photos dans leur case : [centre x, centre y (0 à 1, dans la photo), zoom, rotation (90, 180 ou 270°, facultative)].
 window.CADRAGE = {
- "mers-de-nuages": {
-  "dsc3756-modifier": [0.536, 0.5, 1],
+ "mers-de-nuages/maree-basse": {
   "dsc4992": [0.451, 0.5, 1],
-  "b2": [0.5, 0.557, 1],
-  "a1": [0.5, 0.495, 1],
-  "c4": [0.5, 0.494, 1],
-  "dsc0602-modifier": [0.47, 0.5, 1],
-  "c6": [0.515, 0.5, 1],
-  "a2": [0.479, 0.5, 1],
+  "b2": [0.5, 0.524, 1],
+  "b1": [0.5, 0.517, 1],
+  "dsc3741-modifier": [0.5, 0.455, 1],
+  "a1": [0.5, 0.487, 1]
+ },
+ "mers-de-nuages/un-village-dans-la-brume": {
+  "dsc0602-modifier": [0.5, 0.416, 1],
+  "a2": [0.431, 0.521, 1.254],
   "a3": [0.5, 0.497, 1],
+  "c5": [0.362, 0.5, 1]
+ },
+ "mers-de-nuages/haute-mer": {
   "c1": [0.514, 0.5, 1],
-  "c5": [0.5, 0.461, 1],
-  "c3": [0.515, 0.5, 1],
-  "dsc7148": [0.493, 0.5, 1]
+  "a2": [0.475, 0.5, 1],
+  "c6": [0.5, 0.505, 1],
+  "c4": [0.5, 0.526, 1],
+  "d1": [0.5, 0.519, 1],
+  "dsc0503-modifier-modifier": [0.429, 0.5, 1],
+  "dsc1442": [0.5, 0.518, 1]
  },
  "alpes/val-thorens": {
   "dsc1262": [0.5, 0.511, 1]
@@ -42,15 +49,15 @@ window.CADRAGE = {
   "dsc6230-modifier-modifier-modifier": [0.5, 0.591, 1]
  },
  "accueil/series": {
-  "dsc4957": [0.547, 1, 1],
-  "dsc3370-panorama-modifier": [0.466, 0.575, 1],
+  "dsc4957": [0.683, 1, 1],
+  "dsc3370-panorama-modifier": [0.529, 0.575, 1],
   "dsc0337-modifier": [0.621, 0.5, 1],
   "dsc0798-modifier-modifier": [0.235, 0.5, 1],
-  "dsc6161-modifier": [0.414, 0.5, 1],
+  "dsc6161-modifier": [0.38, 0.5, 1],
   "dsc0862": [0, 0.5, 1],
   "dsc2289": [0.5, 1, 1],
-  "dsc0860": [0.791, 0.5, 1],
-  "dsc6053-modifier": [0.5, 1, 1]
+  "dsc0860": [0.6, 0.5, 1],
+  "dsc6053-modifier": [0.5, 0.685, 1]
  },
  "couverture/corse": {
   "dsc0862": [0.5, 0.309, 1]
@@ -99,23 +106,26 @@ window.CADRAGE = {
 window.CADRAGE_MOBILE = {
  "accueil/bandeau": {
   "dsc0860": [0.759, 0.755, 1],
-  "dsc3370-panorama-modifier": [0.601, 0.139, 1],
+  "dsc3370-panorama-modifier": [0.65, 0.139, 1],
   "dsc6230-modifier-modifier-modifier": [0.431, 0.812, 1],
   "c4": [0.283, 0.5, 1],
   "dsc0491-modifier": [0.438, 0, 1],
   "dsc0581-modifier-2": [0.607, 0, 1],
-  "dsc0845": [0.699, 0.535, 1]
+  "dsc0845": [0.699, 0.535, 1],
+  "b1": [0.66, 0.748, 1],
+  "dsc0862": [0.444, 0.309, 1]
  },
  "suivante/nature": {
   "dsc6161-modifier": [0.5, 0.488, 1],
   "dsc6053-modifier": [0.5, 1, 1]
  },
  "accueil/series": {
-  "dsc0862": [0, 1, 1],
   "dsc2289": [0.5, 0.594, 1],
   "dsc6161-modifier": [0.311, 1, 1],
-  "dsc6053-modifier": [0.5, 0.64, 1],
-  "dsc3370-panorama-modifier": [0.466, 0.559, 1]
+  "dsc6053-modifier": [0.5, 0.632, 1],
+  "dsc3370-panorama-modifier": [0.466, 0, 1],
+  "dsc4957": [0.683, 0.602, 1],
+  "dsc0862": [0, 0.427, 1]
  },
  "accueil/portrait": {
   "dsc4957": [1, 0.5, 1.084]

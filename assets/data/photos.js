@@ -11,30 +11,54 @@ window.SITE = {
      "id": "",
      "nom": "",
      "photos": [
-      { "id": "dsc0488-modifier", "w": 1000, "h": 670, "titre": "", "lieu": "" },
-      { "id": "dsc0503-modifier-modifier", "w": 1000, "h": 580, "titre": "", "lieu": "" },
-      { "id": "dsc0602-modifier", "w": 800, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc1373", "w": 1000, "h": 742, "titre": "", "lieu": "" },
-      { "id": "dsc1442", "w": 1000, "h": 701, "titre": "", "lieu": "" },
-      { "id": "dsc3741-modifier", "w": 1000, "h": 744, "titre": "", "lieu": "" },
       { "id": "dsc3756-modifier", "w": 799, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc4957", "w": 1000, "h": 707, "titre": "", "lieu": "" },
-      { "id": "dsc4992", "w": 800, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc7148", "w": 1000, "h": 667, "titre": "", "lieu": "" },
-      { "id": "a1", "w": 1000, "h": 695, "titre": "A1", "lieu": "" },
-      { "id": "a2", "w": 759, "h": 1000, "titre": "A2", "lieu": "" },
-      { "id": "a3", "w": 1000, "h": 691, "titre": "A3", "lieu": "" },
+      { "id": "c3", "w": 1000, "h": 667, "titre": "C3", "lieu": "" },
+      { "id": "d2", "w": 1000, "h": 737, "titre": "D2", "lieu": "" },
       { "id": "a4", "w": 1000, "h": 667, "titre": "A4", "lieu": "" },
+      { "id": "c2", "w": 1000, "h": 675, "titre": "C2", "lieu": "" }
+     ]
+    },
+    {
+     "id": "maree-basse",
+     "nom": "Marée basse",
+     "annee": "",
+     "texte": "Quand la mer se retire, la brume ne tient plus qu’au ras des prés. Les arbres en sortent un à un, et le soleil passe entre eux en longues traînées de lumière.",
+     "photos": [
+      { "id": "a1", "w": 1000, "h": 695, "titre": "A1", "lieu": "" },
       { "id": "b1", "w": 1000, "h": 708, "titre": "B1", "lieu": "" },
       { "id": "b2", "w": 1000, "h": 763, "titre": "B2", "lieu": "" },
+      { "id": "dsc3741-modifier", "w": 1000, "h": 744, "titre": "", "lieu": "" },
+      { "id": "dsc4992", "w": 800, "h": 1000, "titre": "", "lieu": "" }
+     ]
+    },
+    {
+     "id": "un-village-dans-la-brume",
+     "nom": "Un village dans la brume",
+     "annee": "",
+     "texte": "Certains matins, la brume monte jusqu’aux toits. D’en haut, je regarde les maisons s’effacer : il ne reste qu’un clocher, un château, quelques collines qui flottent.",
+     "photos": [
+      { "id": "a3", "w": 1000, "h": 691, "titre": "A3", "lieu": "" },
+      { "id": "dsc0488-modifier", "w": 1000, "h": 670, "titre": "", "lieu": "" },
+      { "id": "dsc0602-modifier", "w": 800, "h": 1000, "titre": "", "lieu": "" },
+      { "id": "c5", "w": 1000, "h": 837, "titre": "C5", "lieu": "" }
+     ]
+    },
+    {
+     "id": "haute-mer",
+     "nom": "Haute mer",
+     "annee": "",
+     "texte": "Quand la mer est haute, il n’y a plus de vallées, plus de routes, plus rien qu’un océan blanc jusqu’à l’horizon. C’est pour ces matins-là que je me lève avant le soleil.",
+     "photos": [
       { "id": "c1", "w": 1000, "h": 668, "titre": "C1", "lieu": "" },
-      { "id": "c2", "w": 1000, "h": 675, "titre": "C2", "lieu": "" },
-      { "id": "c3", "w": 1000, "h": 667, "titre": "C3", "lieu": "" },
       { "id": "c4", "w": 1000, "h": 696, "titre": "C4", "lieu": "" },
-      { "id": "c5", "w": 1000, "h": 837, "titre": "C5", "lieu": "" },
       { "id": "c6", "w": 1000, "h": 667, "titre": "C6", "lieu": "" },
       { "id": "d1", "w": 1000, "h": 711, "titre": "D1", "lieu": "" },
-      { "id": "d2", "w": 1000, "h": 737, "titre": "D2", "lieu": "" }
+      { "id": "dsc0503-modifier-modifier", "w": 1000, "h": 580, "titre": "", "lieu": "" },
+      { "id": "dsc1442", "w": 1000, "h": 701, "titre": "", "lieu": "" },
+      { "id": "a2", "w": 759, "h": 1000, "titre": "A2", "lieu": "" }
      ]
     }
    ]
@@ -63,7 +87,7 @@ window.SITE = {
      "id": "dolomites",
      "nom": "Dolomites",
      "annee": "2021",
-     "texte": "",
+     "texte": "Des tours de calcaire pâle qui jaillissent des alpages, des lacs couleur d’émeraude et des nuages accrochés aux sommets. Ici, chaque virage dévoile un nouveau décor, comme si la montagne avait été dessinée.",
      "photos": [
       { "id": "dsc0405", "w": 1000, "h": 734, "titre": "", "lieu": "" },
       { "id": "dsc0427", "w": 1000, "h": 726, "titre": "", "lieu": "" },
@@ -83,7 +107,7 @@ window.SITE = {
      "id": "val-thorens",
      "nom": "Val Thorens",
      "annee": "2024",
-     "texte": "",
+     "texte": "La montagne en hiver, entre les traces de ski dans la poudreuse et les lumières de la station qui s’allument à la tombée du jour. Un autre visage des Alpes, plus feutré, que j’aime saisir à l’heure bleue.",
      "photos": [
       { "id": "dsc0917", "w": 894, "h": 1000, "titre": "", "lieu": "" },
       { "id": "dsc0921", "w": 1000, "h": 633, "titre": "", "lieu": "" },
@@ -99,7 +123,7 @@ window.SITE = {
      "id": "aiguilles-rouges",
      "nom": "Aiguilles Rouges",
      "annee": "2025",
-     "texte": "",
+     "texte": "Face au massif du Mont-Blanc, de lac en lac et de crête en crête. Des levers de soleil sur les sommets aux reflets parfaits dans l’eau immobile, un balcon dont on ne se lasse jamais.",
      "photos": [
       { "id": "dsc2603", "w": 1000, "h": 699, "titre": "", "lieu": "" },
       { "id": "dsc2650-panorama-modifier", "w": 1000, "h": 719, "titre": "", "lieu": "" },
