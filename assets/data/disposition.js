@@ -163,6 +163,14 @@ window.CADRAGE_MOBILE = {
  },
  "couverture/hiver": {
   "dsc6053-modifier": [0.479, 0.605, 1]
+ },
+ "autres": {
+  "dsc3370-panorama-modifier-s": [0.5, 0.175, 1],
+  "dsc6161-modifier-s": [0.167, 0.5, 1],
+  "dsc0862-s": [0, 0.365, 1],
+  "dsc6053-modifier-s": [0.5, 0.592, 1],
+  "dsc0860-s": [1, 0.5, 1],
+  "dsc4957-s": [0, 0.524, 1]
  }
 };
 
