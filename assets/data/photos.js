@@ -25,7 +25,7 @@ window.SITE = {
      "id": "maree-basse",
      "nom": "Marée basse",
      "annee": "",
-     "texte": "Quand la mer se retire, la brume ne tient plus qu’au ras des prés. Les arbres en sortent un à un, et le soleil passe entre eux en longues traînées de lumière.",
+     "texte": "Quand la mer se retire, la brume ne tient plus qu’au ras des prés. Les arbres en sortent un à un, premiers habitants de ce vaste océan.",
      "photos": [
       { "id": "a1", "w": 1000, "h": 695, "titre": "A1", "lieu": "" },
       { "id": "b1", "w": 1000, "h": 708, "titre": "B1", "lieu": "" },
@@ -36,9 +36,9 @@ window.SITE = {
     },
     {
      "id": "un-village-dans-la-brume",
-     "nom": "Un village dans la brume",
+     "nom": "Bord de mer",
      "annee": "",
-     "texte": "Certains matins, la brume monte jusqu’aux toits. D’en haut, je regarde les maisons s’effacer : il ne reste qu’un clocher, un château, quelques collines qui flottent.",
+     "texte": "Certains matins, la brume monte jusqu’aux toits. D’en haut, je regarde les maisons s’effacer, jusqu’à ce que le village ne soit plus qu’un rivage.",
      "photos": [
       { "id": "a3", "w": 1000, "h": 691, "titre": "A3", "lieu": "" },
       { "id": "dsc0488-modifier", "w": 1000, "h": 670, "titre": "", "lieu": "" },
@@ -48,9 +48,9 @@ window.SITE = {
     },
     {
      "id": "haute-mer",
-     "nom": "Haute mer",
+     "nom": "Grand large",
      "annee": "",
-     "texte": "Quand la mer est haute, il n’y a plus de vallées, plus de routes, plus rien qu’un océan blanc jusqu’à l’horizon. C’est pour ces matins-là que je me lève avant le soleil.",
+     "texte": "Quand la mer est haute, elle recouvre tout, jusqu’à l’horizon. Seuls les plus hauts sommets gardent la tête hors de l’eau. Le temps d’un matin, le paysage que je connais devient un océan.",
      "photos": [
       { "id": "c1", "w": 1000, "h": 668, "titre": "C1", "lieu": "" },
       { "id": "c4", "w": 1000, "h": 696, "titre": "C4", "lieu": "" },

@@ -171,6 +171,9 @@ window.CADRAGE_MOBILE = {
   "dsc6053-modifier-s": [0.5, 0.592, 1],
   "dsc0860-s": [1, 0.5, 1],
   "dsc4957-s": [0, 0.524, 1]
+ },
+ "alpes/dolomites": {
+  "dsc0491-modifier": [0.5, 0.486, 1]
  }
 };
 
