@@ -246,7 +246,7 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   .nav__item { order: 2; }
   .nav__pied { order: 3; }
   .nav__item--accueil { order: 0; margin-bottom: 1.4rem; padding-bottom: 1.4rem; border-bottom: 1px solid rgba(236, 232, 225, 0.2); }
-  .nav__item:last-of-type::before { content: 'Le photographe'; margin-bottom: 0.9rem; }
+  .nav__item:last-of-type::before { content: 'Derrière l’objectif'; margin-bottom: 0.9rem; }
 
   .nav__item {
     padding: 0.65rem 0;
@@ -405,6 +405,13 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 
 .section { padding: clamp(5rem, 12vw, 10rem) var(--marge); }
 .section--serree { padding-top: 0; }
+/* Page « À propos » : place pour l'en-tête fixe ; sur mobile, moins de vide au-dessus du titre
+   et entre la photo et « Contact ». */
+.section--apropos { padding-top: clamp(8rem, 18vh, 12rem); }
+@media (max-width: 860px) {
+  .section--apropos { padding-top: 7rem; padding-bottom: 1rem; }
+  .section--apropos ~ #contact { padding-bottom: 3.5rem; } /* un peu moins de vide avant « Matériel » */
+}
 .conteneur { max-width: 82rem; margin-inline: auto; }
 
 .manifeste {
@@ -428,6 +435,8 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 .cadre { position: relative; overflow: hidden; border-radius: 2px; background: var(--fond-2); }
 .cadre img { width: 100%; height: 100%; object-fit: cover; }
 .cadre--portrait { aspect-ratio: 4 / 5; }
+/* Une colonne (mobile, tablette) : la photo portrait passe en 16/9 pour prendre moins de hauteur (page « À propos ») */
+@media (max-width: 860px) { .deux-colonnes .cadre--portrait { aspect-ratio: 16 / 9; } }
 
 /* Zone à compléter (portrait, etc.) */
 .a-completer {
@@ -796,12 +805,12 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   .deux-colonnes:has(.contact--colonne) h2,
   .deux-colonnes:has(.contact--colonne) .contact.contact--colonne h2 { font-size: clamp(2.2rem, 3.6vw, 3.3rem); }
 }
-/* Accueil, une colonne (mobile, tablette) : présentation, puis la photo en paysage (moins haute),
+/* Accueil, une colonne (mobile, tablette) : présentation, puis la photo en 16/9 (moins haute, moins de défilement),
    puis le contact. La colonne de texte s'efface pour que la photo puisse se glisser entre les deux. */
 @media (max-width: 860px) {
   .deux-colonnes:has(.contact--colonne) { row-gap: 0; }
   .deux-colonnes:has(.contact--colonne) .texte { display: contents; }
-  .deux-colonnes:has(.contact--colonne) .cadre { order: 1; aspect-ratio: 4 / 3; margin: 2.5rem 0; }
+  .deux-colonnes:has(.contact--colonne) .cadre { order: 1; aspect-ratio: 16 / 9; margin: 2.5rem 0; }
   .deux-colonnes:has(.contact--colonne) .contact--colonne { order: 2; margin-top: 0; padding-top: 0; border-top: 0; }
 }
 /* Accueil, une colonne : entre la dernière carte des séries et « À propos », le même espace

@@ -128,7 +128,8 @@ window.CADRAGE_MOBILE = {
   "dsc0862": [0, 0.427, 1]
  },
  "accueil/portrait": {
-  "dsc4957": [1, 0.5, 1.084]
+  "dsc4957": [1, 0.5, 1.084],
+  "a-propos": [0.7, 0.732, 1]
  },
  "couverture/corse": {
   "dsc0862": [0.384, 0.309, 1]
