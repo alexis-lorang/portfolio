@@ -804,6 +804,16 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 @media (min-width: 861px) {
   .deux-colonnes:has(.contact--colonne) h2,
   .deux-colonnes:has(.contact--colonne) .contact.contact--colonne h2 { font-size: clamp(2.2rem, 3.6vw, 3.3rem); }
+  /* La colonne de texte se cale sur le bord droit des cartes séries ; la photo prend toute la place restante
+     et exactement la hauteur « À propos » + « Contact » (du surtitre à la ligne mail / Instagram). */
+  .deux-colonnes:has(.contact--colonne) {
+    --ecart: clamp(2rem, 6vw, 6rem);
+    gap: var(--ecart); align-items: stretch;
+    grid-template-columns: minmax(0, 1fr) min(34rem, calc((100% - var(--ecart)) * 6 / 11));
+  }
+  .deux-colonnes:has(.contact--colonne) .texte { max-width: none; }
+  .deux-colonnes:has(.contact--colonne) .cadre { aspect-ratio: auto; }
+  .deux-colonnes:has(.contact--colonne) .cadre img { position: absolute; inset: 0; }
 }
 /* Accueil, une colonne (mobile, tablette) : présentation, puis la photo en 16/9 (moins haute, moins de défilement),
    puis le contact. La colonne de texte s'efface pour que la photo puisse se glisser entre les deux. */
