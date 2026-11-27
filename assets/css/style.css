@@ -136,14 +136,15 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   position: fixed; inset: 0 0 auto 0; z-index: 50;
   display: flex; align-items: center; justify-content: space-between;
   padding: 1.4rem var(--marge);
-  transition: transform 0.5s var(--doux), background-color 0.4s, padding 0.4s, backdrop-filter 0.4s;
+  border-bottom: 1px solid transparent; /* le trait du bas apparaît avec le fond sans changer la hauteur */
+  transition: transform 0.5s var(--doux), background-color 0.4s, border-color 0.4s, backdrop-filter 0.4s;
 }
 .entete.est-pleine {
-  padding-block: 0.9rem;
+  /* la barre garde la taille du haut de page : seul le fond flouté apparaît */
   background: rgba(11, 13, 16, 0.72);
   -webkit-backdrop-filter: blur(16px) saturate(1.3);
   backdrop-filter: blur(16px) saturate(1.3);
-  border-bottom: 1px solid var(--trait);
+  border-bottom-color: var(--trait);
 }
 .entete.est-cachee { transform: translateY(-100%); }
 /* posée un instant par main.js pour mesurer l'en-tête réduit */
@@ -175,7 +176,6 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
   margin: calc(var(--sous-y) / var(--sous-taille) * 1em) calc(var(--sous-lettres) * -1em) 0 calc(var(--sous-x) / var(--sous-taille) * 1em);
   color: rgba(255, 255, 255, 0.88);
 }
-.entete.est-pleine .logo { font-size: 1.5rem; }
 
 .nav { display: flex; gap: clamp(1.1rem, 2.4vw, 2.5rem); }
 .nav__item { position: relative; }
@@ -188,8 +188,7 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 }
 /* Le menu doit tenir sur une ligne à côté du grand logo (haut de page) : sinon les liens passent sur
    deux lignes et ne sont plus à la même place que dans la barre réduite. Resserré sur les écrans moyens. */
-/* Le menu reste à la même hauteur en haut de page et dans la barre réduite (sinon il saute quand la barre
-   apparaît) : centré dans la barre réduite, dont main.js mesure la hauteur (--entete-h). */
+/* Menu centré verticalement dans la barre, dont main.js mesure la hauteur (--entete-h). */
 @media (min-width: 981px) {
   .nav { position: absolute; right: var(--marge); top: calc(var(--entete-h, 4.2rem) / 2); transform: translateY(-50%); }
 }
