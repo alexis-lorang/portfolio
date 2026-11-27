@@ -188,11 +188,10 @@ p { margin: 0 0 1.2em; text-wrap: pretty; }
 }
 /* Le menu doit tenir sur une ligne à côté du grand logo (haut de page) : sinon les liens passent sur
    deux lignes et ne sont plus à la même place que dans la barre réduite. Resserré sur les écrans moyens. */
-/* Le menu reste à la même hauteur en haut de page et dans la barre réduite (sinon il remonte de
-   ~13 px quand la barre apparaît) : centré sur le logo réduit = marge 0,9rem + moitié du logo
-   (hauteur du logo ≈ 2,16 × sa taille de police, 1,5rem dans la barre). */
+/* Le menu reste à la même hauteur en haut de page et dans la barre réduite (sinon il saute quand la barre
+   apparaît) : centré dans la barre réduite, dont main.js mesure la hauteur (--entete-h). */
 @media (min-width: 981px) {
-  .nav { position: absolute; right: var(--marge); top: calc(0.9rem + 1.5rem * 1.08); transform: translateY(-50%); }
+  .nav { position: absolute; right: var(--marge); top: calc(var(--entete-h, 4.2rem) / 2); transform: translateY(-50%); }
 }
 @media (min-width: 981px) and (max-width: 1180px) {
   .nav { gap: 1rem; }
